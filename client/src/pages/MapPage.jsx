@@ -66,7 +66,7 @@ const MapPage = () => {
 
   useEffect(() => {
     if (location) {
-      axios.get(`http://localhost:5000/api/posts/nearby?lat=${location.lat}&lng=${location.lng}`)
+      axios.get(`http://neighbor-help-mern.onrender.com/api/posts/nearby?lat=${location.lat}&lng=${location.lng}`)
         .then((res) => setPosts(res.data))
         .catch((err) => console.error(err));
     }
@@ -78,7 +78,7 @@ const MapPage = () => {
     if (!consent) return alert("Please accept the privacy policy.");
 
     try {
-      const res = await axios.post('http://localhost:5000/api/posts/create', { ...formData, lat: location.lat, lng: location.lng });
+      const res = await axios.post('https://neighbor-help-mern.onrender.com/api/posts/create', { ...formData, lat: location.lat, lng: location.lng });
       setPosts([...posts, res.data]);
       
       // সাকসেস এনিমেশন হ্যান্ডলিং
