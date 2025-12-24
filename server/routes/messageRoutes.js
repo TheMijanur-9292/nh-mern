@@ -1,81 +1,38 @@
 const express = require('express');
 const router = express.Router();
 const Message = require('../models/Message');
+const User = require('../models/User'); // ইউজার মডেল নিশ্চিত করুন
 const mongoose = require('mongoose');
 
-// ১. মেসেজ পাঠানো
-router.post('/send', async (req, res) => {
-  try {
-    const { senderId, receiverId, message } = req.body;
-
-    if (!senderId || !receiverId || !message) {
-      return res.status(400).json({ message: "Missing required fields" });
-    }
-
-    const newMessage = new Message({
-      senderId: new mongoose.Types.ObjectId(senderId),
-      receiverId: new mongoose.Types.ObjectId(receiverId),
-      message: message.trim()
-    });
-
-    const savedMessage = await newMessage.save();
-    res.status(201).json(savedMessage);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// ২. দুই ইউজারের মধ্যে চ্যাট হিস্ট্রি আনা
-router.get('/:userId/:otherId', async (req, res) => {
-  try {
-    const { userId, otherId } = req.params;
-
-    // আইডি ভ্যালিডেশন
-    if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(otherId)) {
-      return res.status(400).json({ message: "Invalid User IDs" });
-    }
-
-    const messages = await Message.find({
-      $or: [
-        { senderId: userId, receiverId: otherId },
-        { senderId: otherId, receiverId: userId }
-      ]
-    }).sort({ createdAt: 1 });
-    
-    res.json(messages);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// ৩. ইউজারের সব ইনবক্স লিস্ট (Conversations) আনা
-// আপনার ডেটাবেসে নাম না আসার সমস্যার সমাধান এখানে:
+// ইউজারের সব ইনবক্স লিস্ট আনা
 router.get('/conversations/:userId', async (req, res) => {
   try {
-    const { userId } = req.params;
+    const rawUserId = req.params.userId;
+    
+    // ১. আইডি থেকে কোনো স্পেস থাকলে তা মুছে ফেলা
+    const userIdStr = rawUserId.trim();
 
-    // কড়া আইডি ভ্যালিডেশন এবং ট্রিম করা
-    if (!mongoose.Types.ObjectId.isValid(userId.trim())) {
+    // ২. শক্তিশালী আইডি চেক
+    if (!mongoose.Types.ObjectId.isValid(userIdStr)) {
+      console.log("Invalid ID Detected:", userIdStr);
       return res.status(400).json({ message: "Invalid User ID format" });
     }
 
-    const userObjectId = new mongoose.Types.ObjectId(userId.trim());
+    const userObjectId = new mongoose.Types.ObjectId(userIdStr);
 
     const conversations = await Message.aggregate([
-      // ক. এই ইউজারের সাথে সম্পর্কিত সব মেসেজ খুঁজে বের করা
-      { 
-        $match: { 
+      // ৩. এই ইউজারের সাথে জড়িত সব মেসেজ ম্যাচ করা
+      {
+        $match: {
           $or: [
-            { senderId: userObjectId }, 
+            { senderId: userObjectId },
             { receiverId: userObjectId }
-          ] 
-        } 
+          ]
+        }
       },
-      
-      // খ. নতুন মেসেজ সবার উপরে রাখা
+      // ৪. সময় অনুযায়ী সর্ট করা
       { $sort: { createdAt: -1 } },
-
-      // গ. চ্যাট পার্টনারকে গ্রুপ করা (যাতে এক জনের নাম একবারই আসে)
+      // ৫. চ্যাট পার্টনারকে গ্রুপ করা
       {
         $group: {
           _id: {
@@ -89,21 +46,17 @@ router.get('/conversations/:userId', async (req, res) => {
           updatedAt: { $first: "$createdAt" }
         }
       },
-
-      // ঘ. ইউজার কালেকশন (users) থেকে পার্টনারের নাম ও তথ্য আনা
+      // ৬. ইউজার কালেকশন থেকে তথ্য আনা
       {
         $lookup: {
-          from: 'users', // আপনার ডেটাবেস অনুযায়ী কালেকশন নাম 'users'
+          from: 'users', // ডাটাবেসে চেক করুন এটি 'users' ই আছে কি না
           localField: '_id',
           foreignField: '_id',
           as: 'userInfo'
         }
       },
-      
-      // ঙ. তথ্য ফ্ল্যাট করা (এটি না করলে userInfo অ্যারে হিসেবে থাকবে এবং নাম দেখাবে না)
       { $unwind: "$userInfo" },
-
-      // চ. শুধুমাত্র প্রয়োজনীয় ডাটা পাঠানো (পাসওয়ার্ড ছাড়া)
+      // ৭. ডাটা প্রজেক্ট করা
       {
         $project: {
           _id: 1,
@@ -113,18 +66,45 @@ router.get('/conversations/:userId', async (req, res) => {
           "userInfo._id": 1
         }
       },
-
-      // ছ. সময় অনুযায়ী লিস্ট সাজানো
       { $sort: { updatedAt: -1 } }
     ]);
 
-    // ডিবাগিং এর জন্য আপনার টার্মিনালে চেক করুন
-    console.log(`User: ${userId} | Found Conversations: ${conversations.length}`);
-
-    res.json(conversations);
+    res.status(200).json(conversations);
   } catch (err) {
-    console.error("Aggregation Error:", err);
-    res.status(500).json({ error: "Aggregation failed", details: err.message });
+    console.error("Inbox API Error:", err);
+    res.status(500).json({ error: "Internal Server Error", details: err.message });
+  }
+});
+
+// মেসেজ হিস্ট্রি আনা
+router.get('/:userId/:otherId', async (req, res) => {
+  try {
+    const { userId, otherId } = req.params;
+    const messages = await Message.find({
+      $or: [
+        { senderId: userId, receiverId: otherId },
+        { senderId: otherId, receiverId: userId }
+      ]
+    }).sort({ createdAt: 1 });
+    res.json(messages);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// মেসেজ পাঠানো
+router.post('/send', async (req, res) => {
+  try {
+    const { senderId, receiverId, message } = req.body;
+    const newMessage = new Message({
+      senderId: new mongoose.Types.ObjectId(senderId),
+      receiverId: new mongoose.Types.ObjectId(receiverId),
+      message: message.trim()
+    });
+    const savedMessage = await newMessage.save();
+    res.status(201).json(savedMessage);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 

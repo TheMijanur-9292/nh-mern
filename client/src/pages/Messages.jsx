@@ -48,23 +48,24 @@ const Messages = () => {
 
   // ২. ইনবক্স লিস্ট (Conversations) লোড করা
   const fetchConversations = async () => {
-    const uid = currentUser?.id || currentUser?._id;
-    if (!uid) return;
+  // ১. ইউজার আইডি নিশ্চিত করা
+  const uid = currentUser?.id || currentUser?._id;
+  if (!uid) return;
 
-    try {
-      const res = await axios.get(`http://localhost:5000/api/messages/conversations/${uid}`);
-      setConversations(res.data);
-      
-      // Navbar Fix: যদি URL এ আইডি না থাকে তবে প্রথম চ্যাটটি অটো লোড করো
-      if (!receiverIdFromUrl && res.data.length > 0) {
-        const latestChat = res.data[0];
-        const partnerName = latestChat.userInfo?.name || 'Neighbor';
-        navigate(`/messages/${latestChat._id}?name=${encodeURIComponent(partnerName)}`, { replace: true });
-      }
-    } catch (err) {
-      console.error("Inbox load failed:", err.response?.data?.message || err.message);
+  try {
+    const res = await axios.get(`http://localhost:5000/api/messages/conversations/${uid}`);
+    setConversations(res.data);
+    
+    // ২. Navbar থেকে সরাসরি এলে প্রথম চ্যাটটি অটো-লোড করার লজিক
+    if (!receiverIdFromUrl && res.data.length > 0) {
+      const lastChat = res.data[0];
+      const name = lastChat.userInfo?.name || 'Neighbor';
+      navigate(`/messages/${lastChat._id}?name=${encodeURIComponent(name)}`, { replace: true });
     }
-  };
+  } catch (err) {
+    console.error("Inbox load failed:", err.response?.data || err.message);
+  }
+};
 
   // ৩. ডেটা রিফ্রেশ ও ইনিশিয়াল লোড
   useEffect(() => {
