@@ -1,199 +1,174 @@
-import { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import '../pages/MapPage.css'; // আপনার আপডেট করা CSS ফাইল
 import L from 'leaflet';
+import axios from 'axios';
+import { Box, CircularProgress, Stack, Fab, Tooltip } from '@mui/material';
+import { MyLocation, AddAlert } from '@mui/icons-material';
+import { keyframes } from '@emotion/react';
+import { useNavigate } from 'react-router-dom';
 
-// ফর্মের জন্য আইকন
-import { FaHeading, FaPhoneAlt, FaListUl, FaInfoCircle, FaMapMarkerAlt } from 'react-icons/fa';
-import './MapPage.css'; // নতুন CSS ফাইল
+// Components
+import FilterBar from '../components/FilterBar';
+import RequestForm from '../components/RequestForm';
+import MapHelpCard from '../components/MapHelpCard';
 
-// --- ক্যাটাগরি অনুযায়ী ম্যাপ আইকন জেনারেটর ---
-const getCategoryIcon = (category) => {
-  let iconUrl = '';
+const pulseAnimation = keyframes`
+  0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7); transform: scale(1); }
+  70% { box-shadow: 0 0 0 20px rgba(255, 71, 87, 0); transform: scale(1.1); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); transform: scale(1); }
+`;
 
-  // ইন্টারনেটের ওপেন সোর্স আইকন ব্যবহার করছি
-  switch (category) {
-    case 'Emergency':
-      iconUrl = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png';
-      break;
-    case 'Tools':
-      iconUrl = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png';
-      break;
-    case 'Food':
-      iconUrl = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png';
-      break;
-    case 'Lost & Found':
-      iconUrl = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png';
-      break;
-    default:
-      iconUrl = 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png';
-  }
+// ১. ফিল্টার বারের আইকন এবং CSS ক্লাস ব্যবহার করে মার্কার
+const getMarkerIcon = (category) => {
+  const icons = {
+    'Emergency': '🚨', 'Medical': '💊', 'Groceries': '🛒', 'Food': '🍔',
+    'Lost & Found': '🔍', 'Transport': '🚗', 'Blood': '🩸', 'Repairs': '🔧', 'Pet Care': '🐾'
+  };
+  const emoji = icons[category] || '📍';
+  const borderColor = category === 'Emergency' ? '#ff4757' : '#764ba2';
 
-  return L.icon({
-    iconUrl: iconUrl,
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
+  return new L.DivIcon({
+    className: 'custom-marker',
+    html: `<div class="marker-pin-animated" style="background: white; border: 2px solid ${borderColor}; border-radius: 50%; width: 32px; height: 32px; display: flex; justify-content: center; align-items: center; font-size: 18px;">${emoji}</div>`,
+    iconSize: [32, 32],
+    iconAnchor: [16, 32]
   });
 };
 
+// ২. ইউজারের নিজের লোকেশন মার্কার (CSS ক্লাস: user-location-dot)
+const userLocationIcon = new L.DivIcon({
+  className: 'custom-marker',
+  html: `<div class="user-location-dot"></div>`,
+  iconSize: [15, 15]
+});
+
+// ৩. ১০০ মিটার র‍্যান্ডম অফসেট লজিক
+const applyRandomOffset = (location) => {
+  if (!location) return null;
+  const offset = 0.0009; 
+  return {
+    lat: location.lat + (Math.random() - 0.5) * offset,
+    lng: location.lng + (Math.random() - 0.5) * offset
+  };
+};
+
+const RecenterAutomatically = ({ lat, lng }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (lat && lng) map.flyTo([lat, lng], 15);
+  }, [lat, lng, map]);
+  return null;
+};
+
 const MapPage = () => {
-  const [location, setLocation] = useState(null);
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false); // এনিমেটেড মেসেজের জন্য
-  
-  // ফর্ম স্টেট
-  const [formData, setFormData] = useState({ 
-    title: '', 
-    description: '', 
-    contact: '', 
-    category: 'Emergency' 
-  });
-  const [consent, setConsent] = useState(false); // সম্মতি চেকবক্স
+  const [loading, setLoading] = useState(true);
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [filter, setFilter] = useState('All');
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => setLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
-        (err) => alert("Location needed!")
-      );
+    const loggedInUser = localStorage.getItem('user');
+    if (loggedInUser) {
+      const parsed = JSON.parse(loggedInUser);
+      setUser({ ...parsed, id: parsed.id || parsed._id });
     }
+    fetchPosts();
+    handleGetCurrentLocation();
   }, []);
 
-  useEffect(() => {
-    if (location) {
-      axios.get(`http://neighbor-help-mern.onrender.com/api/posts/nearby?lat=${location.lat}&lng=${location.lng}`)
-        .then((res) => setPosts(res.data))
-        .catch((err) => console.error(err));
-    }
-  }, [location]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!location) return;
-    if (!consent) return alert("Please accept the privacy policy.");
-
+  const fetchPosts = async () => {
     try {
-      const res = await axios.post('https://neighbor-help-mern.onrender.com/api/posts/create', { ...formData, lat: location.lat, lng: location.lng });
-      setPosts([...posts, res.data]);
-      
-      // সাকসেস এনিমেশন হ্যান্ডলিং
-      setShowForm(false);
-      setShowSuccess(true);
-      setFormData({ title: '', description: '', contact: '', category: 'Emergency' });
-      setConsent(false);
-
-      // ৩ সেকেন্ড পর মেসেজ গায়েব হবে
-      setTimeout(() => setShowSuccess(false), 3000);
-
-    } catch (error) {
-      console.error(error);
-      alert("Error posting request");
+      const res = await axios.get('http://localhost:5000/api/posts');
+      setPosts(res.data);
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
     }
   };
 
-  if (!location) return <div className="loading-screen"><h2>📍 Locating you...</h2></div>;
+  const handleGetCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => setCurrentLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+        (err) => console.log("Location Access Denied")
+      );
+    }
+  };
+
+  const filteredPosts = posts.filter(p => filter === 'All' ? true : p.category === filter);
 
   return (
-    <div className="map-page-container">
-      
-      {/* অ্যানিমেটেড সাকসেস পপআপ */}
-      {showSuccess && (
-        <div className="success-popup">
-          ✅ Request Posted Successfully!
-        </div>
+    <Box sx={{ height: 'calc(100vh - 70px)', width: '100%', position: 'relative' }}>
+      <FilterBar filter={filter} setFilter={setFilter} posts={posts} />
+
+      <RequestForm 
+        open={isFormOpen} 
+        onClose={() => setIsFormOpen(false)} 
+        currentLocation={applyRandomOffset(currentLocation)}
+        refreshPosts={fetchPosts} 
+      />
+
+      {loading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <MapContainer 
+          center={currentLocation ? [currentLocation.lat, currentLocation.lng] : [23.81, 90.41]} 
+          zoom={14} 
+          style={{ height: "100%" }} 
+          zoomControl={false}
+        >
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          
+          {currentLocation && (
+            <Marker position={[currentLocation.lat, currentLocation.lng]} icon={userLocationIcon}>
+              <Popup>You are here</Popup>
+            </Marker>
+          )}
+
+          {currentLocation && <RecenterAutomatically lat={currentLocation.lat} lng={currentLocation.lng} />}
+          
+          {filteredPosts.map((post) => (
+            post.location && (
+              <Marker key={post._id} position={[post.location.lat, post.location.lng]} icon={getMarkerIcon(post.category)}>
+                <Popup>
+                  <MapHelpCard 
+                    post={post} 
+                    currentUser={user} 
+                    onMessageClick={(id, name) => navigate(`/messages/${id}?name=${name}`)}
+                  />
+                </Popup>
+              </Marker>
+            )
+          ))}
+        </MapContainer>
       )}
 
-      <MapContainer center={[location.lat, location.lng]} zoom={15} style={{ height: "100%", width: "100%" }}>
-        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; OpenStreetMap' />
+      {/* Floating Action Buttons */}
+      <Stack direction="column" spacing={2} sx={{ position: 'absolute', bottom: 30, right: 20, zIndex: 1000, alignItems: 'center' }}>
         
-        {/* ইউজার লোকেশন */}
-        <Marker position={[location.lat, location.lng]}>
-          <Popup><b>You are here!</b> 🏠</Popup>
-        </Marker>
+        <Tooltip title="Go to My Location" placement="left">
+          <Fab onClick={handleGetCurrentLocation} size="medium" sx={{ bgcolor: 'white', color: '#1e90ff', '&:hover': { bgcolor: '#f0f0f0' } }}>
+            <MyLocation />
+          </Fab>
+        </Tooltip>
 
-        {/* ডাটাবেস পোস্ট (ক্যাটাগরি অনুযায়ী কালার) */}
-        {posts.map((post) => (
-          <Marker 
-            key={post._id} 
-            position={[post.location.coordinates[1], post.location.coordinates[0]]}
-            icon={getCategoryIcon(post.category)} // ডাইনামিক আইকন
-          >
-            <Popup>
-              <div className="popup-content">
-                <h3>{post.title}</h3>
-                <p><strong>Desc:</strong> {post.description}</p>
-                <p><strong>Category:</strong> {post.category}</p>
-                <p><strong>📞 Contact:</strong> {post.contact}</p>
-                <hr/>
-                <small>Lat: {post.location.coordinates[1].toFixed(4)}</small><br/>
-                <small>Lng: {post.location.coordinates[0].toFixed(4)}</small>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
-
-      <button className="fab-btn" onClick={() => setShowForm(true)}>
-        + Request Help
-      </button>
-
-      {/* --- মডার্ন ফর্ম --- */}
-      {showForm && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h2>📢 Create Request</h2>
-            <form onSubmit={handleSubmit}>
-              
-              <div className="input-group">
-                <FaHeading className="icon"/>
-                <input type="text" placeholder="Title (e.g. Need Water)" required 
-                  value={formData.title} onChange={(e) => setFormData({...formData, title: e.target.value})} />
-              </div>
-
-              <div className="input-group">
-                <FaInfoCircle className="icon"/>
-                <textarea placeholder="Description" required rows="2"
-                  value={formData.description} onChange={(e) => setFormData({...formData, description: e.target.value})} />
-              </div>
-
-              <div className="input-group">
-                <FaListUl className="icon"/>
-                <select value={formData.category} onChange={(e) => setFormData({...formData, category: e.target.value})}>
-                  <option value="Emergency">🚨 Emergency</option>
-                  <option value="Tools">🔧 Tools</option>
-                  <option value="Food">🍔 Food</option>
-                  <option value="Lost & Found">🐱 Lost & Found</option>
-                </select>
-              </div>
-
-              <div className="input-group">
-                <FaPhoneAlt className="icon"/>
-                <input type="text" placeholder="Contact Info (Phone/Email)" required 
-                  value={formData.contact} onChange={(e) => setFormData({...formData, contact: e.target.value})} />
-              </div>
-
-              {/* সম্মতি চেকবক্স */}
-              <div className="consent-box">
-                <input type="checkbox" id="consent" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
-                <label htmlFor="consent">
-                  I agree to share my <FaMapMarkerAlt/> location & accept the <a href="#" style={{color: '#ff4757'}}>Privacy Policy</a>.
-                </label>
-              </div>
-
-              <div className="form-actions">
-                <button type="button" className="cancel-btn" onClick={() => setShowForm(false)}>Cancel</button>
-                <button type="submit" className="post-btn">Post Request</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-    </div>
+        <Fab 
+          variant="extended" 
+          color="error" 
+          onClick={() => user ? setIsFormOpen(true) : navigate('/signin')}
+          sx={{ animation: `${pulseAnimation} 2s infinite`, textTransform: 'none', fontWeight: 'bold', px: 3 }}
+        >
+          <AddAlert sx={{ mr: 1 }} /> Request Help
+        </Fab>
+      </Stack>
+    </Box>
   );
 };
 

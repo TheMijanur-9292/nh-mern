@@ -1,61 +1,63 @@
 const Post = require('../models/Post');
 
 // ১. নতুন পোস্ট তৈরি করা
-const createPost = async (req, res) => {
+exports.createPost = async (req, res) => {
   try {
-    // এখানে contact রিসিভ করা হচ্ছে
-    const { title, description, category, contact, lat, lng } = req.body;
+    const { title, description, category, contact, location, userId, username } = req.body;
 
-    if (!title || !contact || !lat || !lng) {
-      return res.status(400).json({ message: "Please fill all required fields." });
+    // ডাটা ভ্যালিডেশন চেক
+    if (!title || !category || !location || !userId || !username) {
+      return res.status(400).json({ message: "Missing required fields: title, category, location, userId or username." });
     }
 
     const newPost = new Post({
       title,
       description,
       category,
-      contact, // ডাটাবেসে সেভ হচ্ছে
-      location: {
-        type: 'Point',
-        coordinates: [parseFloat(lng), parseFloat(lat)] // [Longitude, Latitude]
-      }
+      contact,
+      location,
+      userId,
+      username
     });
 
-    await newPost.save();
-    res.status(201).json(newPost);
-
+    const savedPost = await newPost.save();
+    console.log("✅ New Post Created by:", username);
+    res.status(201).json(savedPost);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: error.message });
+    console.error("❌ Error creating post:", error.message);
+    res.status(400).json({ message: error.message });
   }
 };
 
-// ২. কাছের পোস্ট খুঁজে বের করা
-const getNearbyPosts = async (req, res) => {
+// ২. সব পোস্ট নিয়ে আসা (ম্যাপে দেখানোর জন্য)
+exports.getPosts = async (req, res) => {
   try {
-    const { lat, lng } = req.query;
-
-    if (!lat || !lng) {
-      return res.status(400).json({ message: "Latitude and Longitude required" });
-    }
-
-    const posts = await Post.find({
-      location: {
-        $near: {
-          $geometry: {
-            type: "Point",
-            coordinates: [parseFloat(lng), parseFloat(lat)]
-          },
-          $maxDistance: 5000 // ৫০০০ মিটার = ৫ কিমি
-        }
-      }
-    });
-
+    // ডাটাবেস থেকে সব পোস্ট লেটেস্ট থেকে ওল্ড এই অর্ডারে আনা
+    const posts = await Post.find().sort({ createdAt: -1 });
     res.status(200).json(posts);
-
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-module.exports = { createPost, getNearbyPosts };
+// ৩. একটি নির্দিষ্ট ইউজারের সব পোস্ট দেখা (প্রোফাইল পেজের জন্য)
+exports.getUserPosts = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const userPosts = await Post.find({ userId: userId }).sort({ createdAt: -1 });
+    res.status(200).json(userPosts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// ৪. পোস্ট ডিলিট করা
+exports.deletePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Post.findByIdAndDelete(id);
+    res.status(200).json({ message: "Post deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

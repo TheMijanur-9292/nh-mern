@@ -1,45 +1,53 @@
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Box, CssBaseline } from '@mui/material'; 
 import Home from './pages/Home';
 import MapPage from './pages/MapPage';
 import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import './App.css';
+import SignIn from './pages/SignIn'; // ইম্পোর্ট করো
+import SignUp from './pages/SignUp'; // ইম্পোর্ট করো
+import Messages from './pages/Messages';
 
 function App() {
   return (
     <BrowserRouter>
-      {/* ফ্লেক্সবক্স দিয়ে পুরো লেআউট সাজানো */}
-      <div style={styles.appContainer}>
-        
+      <CssBaseline /> 
+      
+      <Box 
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh',
+          width: '100%', // এটি নিশ্চিত করে যে অ্যাপটি পুরো উইডথ নিচ্ছে
+          overflowX: 'hidden' // হরাইজন্টাল স্ক্রল বন্ধ করবে
+        }}
+      >
         <Navbar />
-        
-        {/* মেইন কন্টেন্ট এরিয়া (যতটুকু জায়গা ফাঁকা পাবে নিয়ে নেবে) */}
-        <div style={styles.content}>
+
+        <Box 
+          component="main" 
+          sx={{ 
+            flexGrow: 1, 
+            width: '100%', // মেইন কন্টেন্টও ফুল উইডথ হবে
+            display: 'flex',
+            flexDirection: 'column',
+            p: 0, // কোনো প্যাডিং থাকবে না
+            m: 0  // কোনো মার্জিন থাকবে না
+          }}
+        >
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/map" element={<MapPage />} />
+            <Route path="/signin" element={<SignIn />} />  {/* নতুন রাউট */}
+          <Route path="/signup" element={<SignUp />} />  {/* নতুন রাউট */}
+          <Route path="/messages" element={<Messages />} />
+          <Route path="/messages/:userId" element={<Messages />} />
           </Routes>
-        </div>
-
-        <Footer />
+        </Box>
         
-      </div>
+      </Box>
     </BrowserRouter>
   );
 }
-
-const styles = {
-  appContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    minHeight: '100vh', // পুরো স্ক্রিন হাইট
-    width: '100vw',    // পুরো স্ক্রিন উইডথ
-  },
-  content: {
-    flex: 1, // Navbar ও Footer বাদে বাকি সব জায়গা নেবে
-    display: 'flex',
-    flexDirection: 'column'
-  }
-};
 
 export default App;

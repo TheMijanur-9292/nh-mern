@@ -4,36 +4,51 @@ const postSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
+    trim: true
   },
-  description: String,
-  // নতুন কন্টাক্ট ফিল্ড
-  contact: {
+  description: {
     type: String,
-    required: true 
+    required: true
   },
   category: {
     type: String,
-    enum: ['Emergency', 'Tools', 'Food', 'Lost & Found', 'Other'],
-    default: 'Emergency'
+    required: true,
+    enum: ["Emergency", "Medical", "Groceries", "Food", "Lost & Found", "Transport", "Blood", "Repairs", "Pet Care"]
   },
-  // জিও-লোকেশন ফিল্ড
+  contact: {
+    type: String,
+    required: true
+  },
   location: {
-    type: {
-      type: String, 
-      default: 'Point' 
+    lat: {
+      type: Number,
+      required: true
     },
-    coordinates: {
-      type: [Number], // [Longitude, Latitude]
+    lng: {
+      type: Number,
       required: true
     }
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  username: {
+    type: String,
+    required: true
+  },
+  // ২৪ ঘণ্টা পর অটো-ডিলিট করার জন্য এই অংশটি যোগ করা হয়েছে
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
+    expires: 86400 // ৮৬৪০০ সেকেন্ড = ২৪ ঘণ্টা
   }
+}, { 
+  timestamps: true 
 });
 
-// ইনডেক্সিং
-postSchema.index({ location: '2dsphere' });
+// প্রো-টিপ: যদি ডাটাবেসে আগে থেকেই অনেক পোস্ট থাকে, 
+// তবে অনেক সময় নতুন ইনডেক্স কাজ করে না। সেক্ষেত্রে ডাটাবেস একবার ক্লিয়ার করে নেওয়া ভালো।
 
 module.exports = mongoose.model('Post', postSchema);
