@@ -26,12 +26,19 @@ const SignIn = () => {
 
     try {
       const res = await axios.post('http://localhost:5000/api/users/signin', formData);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
+      
+      // 🔥 ফিক্সড: ব্যাকএন্ড সরাসরি ইউজার অবজেক্ট পাঠায়, তাই res.data ব্যবহার করুন
+      // এবং নিশ্চিত করুন id অথবা _id প্রোপার্টি আছে
+      const userData = res.data;
+      localStorage.setItem('user', JSON.stringify(userData));
+      
+      // 🔥 সবচেয়ে জরুরি: নেভবারকে সিগন্যাল পাঠানো যাতে বাটন সাথে সাথে বদলে যায়
+      window.dispatchEvent(new Event('auth-change'));
       
       setToast({ open: true, message: 'Login Successful! Welcome back.', severity: 'success' });
       
-      // ১.৫ সেকেন্ড পর হোম পেজে নিয়ে যাবে
-      setTimeout(() => navigate('/'), 1500);
+      // ১.৫ সেকেন্ড পর ম্যাপ পেজে নিয়ে যাবে
+      setTimeout(() => navigate('/map'), 1500);
     } catch (err) {
       setToast({ 
         open: true, 

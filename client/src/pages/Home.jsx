@@ -4,7 +4,9 @@ import HeroSection from '../components/HeroSection';
 import Stats from '../components/Stats';
 import HowItWorks from '../components/HowItWorks';
 import Categories from '../components/Categories';
+import UserSlider from '../components/UserSlider';
 import Footer from '../components/Footer';
+
 
 const Home = () => {
   return (
@@ -13,6 +15,8 @@ const Home = () => {
       <Stats />
       <HowItWorks />
       <Categories />
+     
+      <UserSlider />
       <Footer />
     </Box>
   );

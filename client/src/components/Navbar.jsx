@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
   AppBar, Toolbar, Typography, Button, IconButton, 
-  Box, Avatar, Menu, MenuItem, Badge, Divider,Tooltip, Stack, useMediaQuery, useTheme 
+  Box, Avatar, Menu, MenuItem, Badge, Divider, Tooltip, Stack, useMediaQuery, useTheme 
 } from '@mui/material';
 import { 
   Menu as MenuIcon, 
@@ -21,22 +21,44 @@ const Navbar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  // ১. লগইন স্টেট চেক করা (স্মার্ট আপডেট)
-  useEffect(() => {
-    const checkUser = () => {
-      const loggedInUser = localStorage.getItem('user');
-      if (loggedInUser) {
-        setUser(JSON.parse(loggedInUser));
+  // ১. সুরক্ষিত ইউজার চেক ফাংশন
+  const checkUser = () => {
+    try {
+      const savedUser = localStorage.getItem('user');
+      
+      // গুরুত্বপূর্ণ চেক: যদি ডাটা না থাকে বা স্ট্রিং হিসেবে "undefined" থাকে
+      if (savedUser && savedUser !== "undefined" && savedUser !== "null") {
+        const parsedUser = JSON.parse(savedUser);
+        if (parsedUser && (parsedUser.id || parsedUser._id)) {
+          setUser(parsedUser);
+        } else {
+          setUser(null);
+        }
       } else {
         setUser(null);
       }
-    };
-    
+    } catch (error) {
+      console.error("Navbar JSON parse error:", error);
+      localStorage.removeItem('user'); // ভুল ডাটা থাকলে রিমুভ করে দেওয়া নিরাপদ
+      setUser(null);
+    }
+  };
+
+  // ২. রি-রেন্ডার নিশ্চিত করতে লিসেনার
+  useEffect(() => {
     checkUser();
-    // উইন্ডো ফোকাস হলে বা স্টোরেজ চেঞ্জ হলেও আপডেট হবে
-    window.addEventListener('storage', checkUser);
-    return () => window.removeEventListener('storage', checkUser);
-  }, [location]);
+
+    // ইভেন্ট লিসেনার: অন্য কম্পোনেন্ট (যেমন Signin) থেকে সিগন্যাল পাওয়া
+    const handleAuth = () => checkUser();
+    
+    window.addEventListener('storage', handleAuth);
+    window.addEventListener('auth-change', handleAuth);
+
+    return () => {
+      window.removeEventListener('storage', handleAuth);
+      window.removeEventListener('auth-change', handleAuth);
+    };
+  }, [location.pathname]); // পাথ চেঞ্জ হলে বাটন আপডেট হবে
 
   const handleProfileMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleProfileMenuClose = () => setAnchorEl(null);
@@ -44,11 +66,11 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem('user');
     setUser(null);
+    window.dispatchEvent(new Event('auth-change')); // সবাইকে জানানো যে লগআউট হয়েছে
     handleProfileMenuClose();
     navigate('/signin');
   };
 
-  // অ্যাক্টিভ পেজ চেক করার ফাংশন
   const isActive = (path) => location.pathname === path;
 
   return (
@@ -59,27 +81,20 @@ const Navbar = () => {
         backdropFilter: 'blur(8px)', 
         color: '#333', 
         boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
-        zIndex: (theme) => theme.zIndex.drawer + 1 // ফিল্টার বারের উপরে রাখার জন্য
+        zIndex: (theme) => theme.zIndex.drawer + 1 
       }}
     >
       <Toolbar sx={{ justifyContent: 'space-between', px: { xs: 2, md: 5 } }}>
         
-        {/* Logo */}
         <Typography 
           variant="h5" 
           component={Link} 
           to="/" 
-          sx={{ 
-            fontWeight: '900', 
-            textDecoration: 'none', 
-            color: '#764ba2',
-            letterSpacing: '-1px'
-          }}
+          sx={{ fontWeight: '900', textDecoration: 'none', color: '#764ba2', letterSpacing: '-1px' }}
         >
           NeighborHelp
         </Typography>
 
-        {/* Desktop Navigation */}
         {!isMobile && (
           <Stack direction="row" spacing={3} alignItems="center">
             <Button 
@@ -89,7 +104,8 @@ const Navbar = () => {
                 color: isActive('/') ? '#764ba2' : '#555', 
                 fontWeight: '600',
                 borderBottom: isActive('/') ? '2px solid #764ba2' : 'none',
-                borderRadius: 0
+                borderRadius: 0,
+                height: '64px'
               }}
             >
               Home
@@ -121,7 +137,7 @@ const Navbar = () => {
                     bgcolor: location.pathname.includes('/messages') ? 'rgba(118, 75, 162, 0.1)' : 'transparent'
                   }}
                 >
-                  <Badge variant="dot" color="error" invisible={false}>
+                  <Badge variant="dot" color="error">
                     <ChatIcon />
                   </Badge>
                 </IconButton>
@@ -155,7 +171,6 @@ const Navbar = () => {
           </Stack>
         )}
 
-        {/* Mobile Navigation */}
         {isMobile && (
           <Stack direction="row" spacing={1} alignItems="center">
              {user && (
@@ -172,7 +187,7 @@ const Navbar = () => {
             <IconButton onClick={handleProfileMenuOpen}>
               {user ? (
                 <Avatar sx={{ width: 32, height: 32, bgcolor: '#764ba2' }}>
-                  {user.name.charAt(0).toUpperCase()}
+                  {user.name?.charAt(0).toUpperCase() || 'U'}
                 </Avatar>
               ) : (
                 <MenuIcon sx={{ color: '#764ba2' }} />
@@ -181,7 +196,6 @@ const Navbar = () => {
           </Stack>
         )}
 
-        {/* Profile / Mobile Menu */}
         <Menu
           anchorEl={anchorEl}
           open={Boolean(anchorEl)}

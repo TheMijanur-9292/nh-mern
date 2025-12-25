@@ -1,54 +1,48 @@
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    trim: true
+  userId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User', 
+    required: true 
   },
-  description: {
-    type: String,
-    required: true
+  username: { 
+    type: String, 
+    required: true 
   },
-  category: {
-    type: String,
-    required: true,
-    enum: ["Emergency", "Medical", "Groceries", "Food", "Lost & Found", "Transport", "Blood", "Repairs", "Pet Care"]
+  title: { 
+    type: String, 
+    required: true 
   },
-  contact: {
+  category: { 
+    type: String, 
+    required: true 
+  },
+  description: { 
     type: String,
-    required: true
+    default: "No description provided"
   },
   location: {
-    lat: {
-      type: Number,
-      required: true
+    lat: { 
+      type: Number, 
+      required: true 
     },
-    lng: {
-      type: Number,
-      required: true
+    lng: { 
+      type: Number, 
+      required: true 
     }
   },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+  contact: { 
+    type: String, 
+    default: "Chat only" 
   },
-  username: {
-    type: String,
-    required: true
-  },
-  // ২৪ ঘণ্টা পর অটো-ডিলিট করার জন্য এই অংশটি যোগ করা হয়েছে
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    expires: 86400 // ৮৬৪০০ সেকেন্ড = ২৪ ঘণ্টা
+  createdAt: { 
+    type: Date, 
+    default: Date.now, 
+    index: { expires: '24h' } 
   }
-}, { 
-  timestamps: true 
-});
+}, { timestamps: true });
 
-// প্রো-টিপ: যদি ডাটাবেসে আগে থেকেই অনেক পোস্ট থাকে, 
-// তবে অনেক সময় নতুন ইনডেক্স কাজ করে না। সেক্ষেত্রে ডাটাবেস একবার ক্লিয়ার করে নেওয়া ভালো।
+// নিশ্চিত করুন এখানে postSchema.index({ location: '2dsphere' }) জাতীয় কিছু যেন লেখা না থাকে।
 
 module.exports = mongoose.model('Post', postSchema);

@@ -108,4 +108,15 @@ router.post('/send', async (req, res) => {
   }
 });
 
+const messageSchema = new mongoose.Schema({
+  senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  receiverId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  message: { type: String, required: true },
+  // এই লাইনটি নিশ্চিত করুন অথবা যুক্ত করুন
+  createdAt: { type: Date, default: Date.now } 
+}, { timestamps: true });
+
+// 🔥 এই লাইনটিই ২৪ ঘণ্টা পর অটো-ডিলিট করবে (86400 সেকেন্ড = 24 ঘণ্টা)
+messageSchema.index({ createdAt: 1 }, { expireAfterSeconds: 86400 });
+
 module.exports = router;
