@@ -1,29 +1,29 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css' // এটা রাখতে পারো বা ডিলিট করতে পারো
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
+import './index.css'; // গ্লোবাল সিএসএস ইমপোর্ট
 
-// একটি ডিফল্ট থিম তৈরি করা হলো (ইচ্ছা করলে কালার কাস্টমাইজ করতে পারবে)
+// Material UI থিম কাস্টমাইজেশন (ঐচ্ছিক, কিন্তু ভালো)
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#667eea', // তোমার হিরো সেকশন এর কালার
+      main: '#764ba2',
     },
     secondary: {
-      main: '#764ba2',
+      main: '#667eea',
     },
   },
   typography: {
-    fontFamily: 'Poppins, sans-serif',
-  }
+    fontFamily: "'Inter', sans-serif",
+  },
 });
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <CssBaseline /> {/* ব্রাউজারের ডিফল্ট স্টাইল রিসেট করে */}
       <App />
     </ThemeProvider>
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);

@@ -1,4 +1,14 @@
-/* ব্রাউজারের ডিফল্ট স্টাইল রিসেট */
+/* গ্লোবাল ভেরিয়েবল */
+:root {
+  --primary-color: #764ba2;
+  --secondary-color: #667eea;
+  --bg-color: #f0f2f5;
+  --text-main: #333333;
+  --text-secondary: #555555;
+  --white: #ffffff;
+}
+
+/* রিসেট এবং বেস স্টাইল */
 * {
   margin: 0;
   padding: 0;
@@ -6,16 +16,32 @@
 }
 
 html, body {
+  font-family: 'Inter', 'Roboto', sans-serif; /* আধুনিক ফন্ট */
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.6;
   width: 100%;
   height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden; /* ডানদিকের অতিরিক্ত স্ক্রল বা ফাঁকা জায়গা বন্ধ করবে */
-  font-family: 'Poppins', sans-serif;
-  background-color: #f0f2f5;
+  overflow-x: hidden;
 }
 
 #root {
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
+}
+
+/* কমন ক্লাস (যেগুলো সব পেজে কাজে লাগবে) */
+.container-full {
+  width: 100%;
+  padding: 0 5%; /* পার্সেন্টেজ প্যাডিং রেসপন্সিভনেসের জন্য */
+}
+
+/* রেসপন্সিভ মিডিয়া কুয়েরি (বেস লেভেল) */
+@media (max-width: 768px) {
+  html {
+    font-size: 95%; /* মোবাইল স্ক্রিনে ফন্ট সাইজ কিছুটা কমানো */
+  }
+  .container-full {
+    padding: 0 3%;
+  }
 }

@@ -1,28 +1,32 @@
-/* client/src/index.css */
-:root {
-  font-family: Arial, Helvetica, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-}
-
-/* ডিফল্ট মার্জিন প্যাডিং জিরো করা */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  width: 100vw;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden; /* ডানে বামে স্ক্রল বন্ধ করা */
-}
-
-#root {
+/* Main Container */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   width: 100%;
-  height: 100%;
-  /* ডিফল্ট টেক্সট এলাইনমেন্ট ঠিক করা */
-  text-align: left; 
+  overflow-x: hidden;
+  background-color: #f0f2f5; /* Light gray background */
+}
+
+/* Main Content Area */
+.main-content {
+  flex-grow: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .app-container {
+    /* Mobile e background change korte chaile ekhane korben */
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    /* Khub choto screen er jonno padding dorkar hole ekhane diben */
+  }
 }

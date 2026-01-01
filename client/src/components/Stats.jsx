@@ -2,30 +2,22 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Box, Typography, Stack, Divider, Paper } from '@mui/material';
 
+// CSS ফাইল ইমপোর্ট
+import './Stats.css';
+
 const Stats = () => {
   return (
-    <Box sx={{ position: 'relative', zIndex: 10, mt: -6, px: 2 }}>
+    <Box className="stats-wrapper">
       <motion.div
         initial={{ y: 50, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <Paper
-          elevation={6}
-          sx={{
-            maxWidth: '900px',
-            mx: 'auto',
-            p: 4,
-            borderRadius: 4,
-            background: 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(10px)',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
-          }}
-        >
+        <Paper elevation={0} className="stats-card">
           <Stack
             direction={{ xs: 'column', md: 'row' }}
-            divider={<Divider orientation="vertical" flexItem sx={{ display: { xs: 'none', md: 'block' } }} />}
+            divider={<Divider orientation="vertical" flexItem sx={{ display: { xs: 'none', md: 'block' }, borderColor: 'rgba(0,0,0,0.06)' }} />}
             spacing={{ xs: 4, md: 0 }}
             justifyContent="space-around"
             alignItems="center"
@@ -40,12 +32,13 @@ const Stats = () => {
   );
 };
 
+// আইটেম কম্পোনেন্ট (Original Props & Logic)
 const StatItem = ({ number, label, color }) => (
-  <Box sx={{ textAlign: 'center' }}>
-    <Typography variant="h3" sx={{ fontWeight: 800, color: color }}>
+  <Box className="stat-item-box">
+    <Typography variant="h3" className="stat-number" sx={{ color: color }}>
       {number}
     </Typography>
-    <Typography variant="body1" sx={{ color: 'text.secondary', fontWeight: 500, mt: 1 }}>
+    <Typography variant="body1" className="stat-label">
       {label}
     </Typography>
   </Box>

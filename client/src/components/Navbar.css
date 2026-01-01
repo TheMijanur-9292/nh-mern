@@ -1,0 +1,109 @@
+/* মেইন নেভবার কন্টেইনার */
+.navbar-root {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(8px);
+    color: #333 !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+    width: 100%;
+}
+
+/* লোগো টেক্সট */
+.logo-text {
+    font-weight: 900 !important;
+    text-decoration: none;
+    color: #764ba2;
+    letter-spacing: -1px;
+}
+
+/* ডেস্কটপ বাটন স্ট্যাক */
+.desktop-stack {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px; /* স্ট্যাক স্পেসিং ৩ (৩*৮=২৪পিক্সেল) */
+}
+
+/* হোম বাটন */
+.nav-home-btn {
+    font-weight: 600 !important;
+    border-radius: 0 !important;
+    height: 64px;
+}
+
+.nav-home-active {
+    color: #764ba2 !important;
+    border-bottom: 2px solid #764ba2 !important;
+}
+
+.nav-home-inactive {
+    color: #555 !important;
+}
+
+/* ম্যাপ বাটন */
+.nav-map-btn {
+    border-radius: 20px !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+}
+
+.nav-map-active {
+    border-color: #764ba2 !important;
+    color: #764ba2 !important;
+}
+
+.nav-map-inactive {
+    background-color: #764ba2 !important;
+    color: #fff !important;
+}
+
+/* মেসেজ আইকন বাটন */
+.msg-icon-active {
+    color: #764ba2 !important;
+    background-color: rgba(118, 75, 162, 0.1) !important;
+}
+
+.msg-icon-inactive {
+    color: #888 !important;
+}
+
+/* প্রোফাইল এরিয়া */
+.profile-welcome {
+    text-align: right;
+    margin-right: 8px;
+}
+
+.avatar-btn {
+    padding: 0 !important;
+    border: 2px solid #764ba2 !important;
+}
+
+/* মোবাইল মেনু আইকন */
+.mobile-icon-active {
+    color: #764ba2 !important;
+}
+
+.mobile-icon-inactive {
+    color: #555 !important;
+}
+
+/* ডেক্সটপ ইউজার সেকশন (Hide on small) */
+@media (max-width: 1200px) {
+    .profile-welcome {
+        display: none;
+    }
+}
+
+/* প্রোফাইল মেনু পেপার স্টাইল */
+.menu-paper {
+    border-radius: 12px !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+    width: 200px;
+}
+
+/* রেসপন্সিভ মিডিয়া কুয়েরি (পার্সেন্টেজ বেসড) */
+@media (max-width: 900px) {
+    /* Toolbar padding adjustments */
+    .desktop-stack {
+        display: none;
+    }
+}

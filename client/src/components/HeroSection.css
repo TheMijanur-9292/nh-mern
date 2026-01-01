@@ -1,0 +1,96 @@
+/* মেইন কন্টেইনার */
+.hero-wrapper {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    /* প্রিমিয়াম কার্ভ ডিজাইন */
+    clip-path: ellipse(150% 100% at 50% 0%);
+    padding-bottom: 5%;
+}
+
+/* এনিমেটেড ব্যাকগ্রাউন্ড শেপস */
+.hero-wrapper::before {
+    content: "";
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    top: -10%;
+    right: -5%;
+    z-index: 1;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+/* টাইটেল স্টাইল */
+.hero-title {
+    font-weight: 900 !important;
+    letter-spacing: -1px !important;
+    text-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    font-size: clamp(2.5rem, 8vw, 4.5rem) !important;
+}
+
+.hero-title span {
+    color: #FFD700;
+    position: relative;
+}
+
+/* সাবটাইটেল */
+.hero-subtitle {
+    opacity: 0.9;
+    font-weight: 300 !important;
+    max-width: 700px;
+    margin: 0 auto 40px auto !important;
+    line-height: 1.6 !important;
+}
+
+/* বাটন স্টাইলিং */
+.btn-need-help {
+    background-color: #ff6b6b !important;
+    color: white !important;
+    border-radius: 50px !important;
+    padding: 12px 35px !important;
+    font-weight: bold !important;
+    text-transform: none !important;
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4) !important;
+}
+
+.btn-give-help {
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    color: white !important;
+    border-radius: 50px !important;
+    padding: 12px 35px !important;
+    font-weight: bold !important;
+    text-transform: none !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.btn-give-help:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-color: #FFD700 !important;
+    color: #FFD700 !important;
+}
+
+/* মোবাইল রেসপন্সিভনেস */
+@media (max-width: 600px) {
+    .hero-wrapper {
+        min-height: 80vh;
+        clip-path: ellipse(200% 100% at 50% 0%);
+    }
+    .hero-stack {
+        width: 100%;
+        padding: 0 10%;
+    }
+}

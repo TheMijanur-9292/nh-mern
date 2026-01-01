@@ -1,63 +1,57 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Box, Typography, Button, Container, Stack } from '@mui/material'; // MUI components
-import { Search, VolunteerActivism } from '@mui/icons-material'; // MUI Icons
+import { Box, Typography, Button, Container, Stack } from '@mui/material';
+import { Search, VolunteerActivism } from '@mui/icons-material';
+
+// CSS ইমপোর্ট
+import './HeroSection.css';
 
 const HeroSection = () => {
   return (
-    <Box
-      sx={{
-        minHeight: '85vh',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        color: 'white',
-        clipPath: 'polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%)',
-        pb: 8, // Padding bottom
-      }}
-    >
+    <Box className="hero-wrapper">
       <Container maxWidth="md">
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-          style={{ textAlign: 'center' }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          style={{ textAlign: 'center', position: 'relative', zIndex: 2 }}
         >
-          <Typography 
-            variant="h2" 
-            component={motion.h2}
-            sx={{ fontWeight: 'bold', mb: 2, textShadow: '2px 2px 4px rgba(0,0,0,0.3)' }}
+          {/* ব্যাজ এর মতো একটি ছোট টেক্সট */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
           >
-            Neighbor<span style={{ color: '#FFD700' }}>Help</span>
+             <Typography variant="overline" sx={{ letterSpacing: 4, fontWeight: 'bold', color: '#FFD700' }}>
+               Community Support Platform
+             </Typography>
+          </motion.div>
+
+          <Typography variant="h2" className="hero-title">
+            Neighbor<span>Help</span>
           </Typography>
 
-          <Typography variant="h5" sx={{ mb: 4, opacity: 0.9, fontWeight: 300 }}>
+          <Typography variant="h5" className="hero-subtitle">
             Connecting Communities, One Hand at a Time. <br />
             Find help instantly or be a hero for your neighbor.
           </Typography>
 
           <Stack 
-            direction={{ xs: 'column', sm: 'row' }} // মোবাইলে কলাম, পিসিতে রো
+            className="hero-stack"
+            direction={{ xs: 'column', sm: 'row' }} 
             spacing={3} 
             justifyContent="center"
           >
             <Link to="/map" style={{ textDecoration: 'none' }}>
               <Button
                 component={motion.button}
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ scale: 1.05, translateY: -2 }}
                 whileTap={{ scale: 0.95 }}
                 variant="contained"
                 size="large"
                 startIcon={<Search />}
-                sx={{
-                  bgcolor: '#ff6b6b',
-                  borderRadius: '50px',
-                  px: 4,
-                  py: 1.5,
-                  fontSize: '1.1rem',
-                  '&:hover': { bgcolor: '#ff5252' }
-                }}
+                className="btn-need-help"
               >
                 I Need Help
               </Button>
@@ -66,21 +60,12 @@ const HeroSection = () => {
             <Link to="/map" style={{ textDecoration: 'none' }}>
               <Button
                 component={motion.button}
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ scale: 1.05, translateY: -2 }}
                 whileTap={{ scale: 0.95 }}
                 variant="outlined"
                 size="large"
                 startIcon={<VolunteerActivism />}
-                sx={{
-                  color: 'white',
-                  borderColor: 'white',
-                  borderRadius: '50px',
-                  px: 4,
-                  py: 1.5,
-                  fontSize: '1.1rem',
-                  backdropFilter: 'blur(5px)',
-                  '&:hover': { borderColor: '#FFD700', color: '#FFD700', bgcolor: 'rgba(255,255,255,0.1)' }
-                }}
+                className="btn-give-help"
               >
                 Give Help
               </Button>
@@ -88,6 +73,14 @@ const HeroSection = () => {
           </Stack>
         </motion.div>
       </Container>
+
+      {/* নিচের দিকে একটি ছোট ডেকোরেশন লাইন */}
+      <Box sx={{ 
+        position: 'absolute', bottom: 20, left: '50%', transform: 'translateX(-50%)',
+        opacity: 0.5, animation: 'bounce 2s infinite' 
+      }}>
+        <Typography variant="caption" sx={{ color: 'white', display: 'block' }}>Scroll to Explore</Typography>
+      </Box>
     </Box>
   );
 };
