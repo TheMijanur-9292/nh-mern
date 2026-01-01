@@ -1,121 +1,164 @@
-/* Container with Professional Gradient Background */
-.how-it-works-root {
-    padding: 100px 5%;
-    background: linear-gradient(180deg, #ffffff 0%, #f3f0ff 100%);
-    position: relative;
-    overflow: hidden;
+/* Root Section */
+.hiw-section {
+  padding: 100px 0;
+  background-color: #ffffff;
+  overflow: hidden;
 }
 
-.section-title {
-    font-weight: 900 !important;
-    margin-bottom: 80px !important;
-    color: #1a1a2e;
-    text-align: center;
-    letter-spacing: -1px;
+/* Header Styling */
+.hiw-header {
+  text-align: center;
+  margin-bottom: 70px;
 }
 
-/* Steps Wrapper with Flexbox */
-.steps-wrapper {
-    display: flex;
+.hiw-main-title {
+  font-weight: 800 !important;
+  color: #1a1a1a;
+  letter-spacing: -1px;
+  margin-bottom: 10px !important;
+}
+
+.hiw-title-line {
+  width: 60px;
+  height: 4px;
+  background: #1e90ff; /* Primary color */
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+/* Steps Container */
+.hiw-steps-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+/* Individual Card */
+.hiw-card {
+  flex: 1;
+  text-align: center;
+  padding: 30px 20px;
+  background: #ffffff;
+  border-radius: 20px;
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.hiw-icon-wrapper {
+  width: 80px;
+  height: 80px;
+  background: #f8faff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 25px;
+  color: #1e90ff;
+  position: relative;
+  border: 1px solid #eef2ff;
+}
+
+.hiw-icon-wrapper svg {
+  font-size: 35px;
+}
+
+.hiw-step-number {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  background: #1a1a1a;
+  color: white;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hiw-step-title {
+  font-weight: 700 !important;
+  color: #1a1a1a;
+  margin-bottom: 12px !important;
+}
+
+.hiw-step-desc {
+  color: #666;
+  line-height: 1.6 !important;
+  max-width: 250px;
+  margin: 0 auto !important;
+}
+
+/* Connectors (Arrows) */
+.hiw-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 50px;
+  color: #cbd5e1;
+}
+
+.connector-arrow-mobile {
+  display: none;
+}
+
+/* Media Queries for Responsiveness */
+
+/* Tablets */
+@media (max-width: 960px) {
+  .hiw-steps-container {
+    gap: 10px;
+  }
+  .hiw-main-title {
+    font-size: 2.5rem !important;
+  }
+}
+
+/* Mobile Devices */
+@media (max-width: 768px) {
+  .hiw-section {
+    padding: 60px 0;
+  }
+
+  .hiw-steps-container {
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
-    position: relative;
-    gap: 20px;
-}
+  }
 
-/* Box Design - Glassmorphism */
-.step-box {
-    flex: 1;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 40px 25px;
-    border-radius: 24px;
-    text-align: center;
-    border: 1px solid rgba(118, 75, 162, 0.1);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
-    transition: all 0.4s ease;
-    position: relative;
-    z-index: 2;
-}
+  .hiw-card {
+    width: 100%;
+    padding: 20px;
+  }
 
-.step-box:hover {
-    transform: translateY(-10px);
-    background: #ffffff;
-    box-shadow: 0 20px 45px rgba(118, 75, 162, 0.15);
-    border-color: #764ba2;
-}
+  .hiw-connector {
+    padding: 10px 0;
+  }
 
-/* Icon Container */
-.icon-circle {
+  .connector-arrow-desktop {
+    display: none;
+  }
+
+  .connector-arrow-mobile {
+    display: block;
+    font-size: 40px !important;
+  }
+
+  .hiw-icon-wrapper {
     width: 70px;
     height: 70px;
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-    box-shadow: 0 8px 15px rgba(118, 75, 162, 0.3);
+  }
+  
+  .hiw-step-desc {
+    max-width: 100%;
+  }
 }
 
-.step-title {
-    font-weight: 800 !important;
-    color: #333;
-    margin-bottom: 12px !important;
-}
-
-.step-desc {
-    color: #666;
-    line-height: 1.6;
-    font-size: 0.9rem;
-}
-
-/* Smart Arrow Design (Horizontal for Laptop/Pad) */
-.step-arrow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #764ba2;
-    opacity: 0.5;
-    animation: pulseArrow 2s infinite;
-}
-
-@keyframes pulseArrow {
-    0% { transform: translateX(0); opacity: 0.3; }
-    50% { transform: translateX(10px); opacity: 1; }
-    100% { transform: translateX(0); opacity: 0.3; }
-}
-
-/* Laptop & Pad (Horizontal Layout) */
-@media (min-width: 769px) {
-    .steps-wrapper {
-        flex-direction: row;
-    }
-}
-
-/* Mobile Responsive (Vertical Layout) */
-@media (max-width: 768px) {
-    .how-it-works-root {
-        padding: 60px 5%;
-    }
-    .steps-wrapper {
-        flex-direction: column;
-        gap: 40px;
-    }
-    .step-box {
-        width: 100%;
-        max-width: 350px;
-    }
-    .step-arrow {
-        transform: rotate(90deg); /* Mobile-e arrow nichey mukhi hobe */
-        animation: pulseArrowVertical 2s infinite;
-    }
-}
-
-@keyframes pulseArrowVertical {
-    0% { transform: translateY(0) rotate(90deg); opacity: 0.3; }
-    50% { transform: translateY(10px) rotate(90deg); opacity: 1; }
-    100% { transform: translateY(0) rotate(90deg); opacity: 0.3; }
+/* Small Phones */
+@media (max-width: 480px) {
+  .hiw-main-title {
+    font-size: 2rem !important;
+  }
 }

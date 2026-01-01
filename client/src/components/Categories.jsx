@@ -1,95 +1,97 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Box, Container, Typography, Grid, Paper } from '@mui/material';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
-  LocalPharmacy, 
-  ShoppingCart, 
-  DirectionsCar, 
-  Bloodtype, 
-  Build, 
-  Pets,
-  ReportProblem, // Emergency
-  Fastfood,      // Food
-  Search         // Lost & Found
+  LocalPharmacy, ShoppingCart, DirectionsCar, 
+  Bloodtype, Build, Pets, ReportProblem, Fastfood, Search 
 } from '@mui/icons-material';
+import './Categories.css';
 
 const categories = [
-  { name: "Emergency", icon: <ReportProblem fontSize="large" />, color: "#ff4757" }, // Red
-  { name: "Medical", icon: <LocalPharmacy fontSize="large" />, color: "#1e90ff" }, // Blue
-  { name: "Groceries", icon: <ShoppingCart fontSize="large" />, color: "#2ed573" }, // Green
-  { name: "Food", icon: <Fastfood fontSize="large" />, color: "#ffa502" }, // Orange
-  { name: "Lost & Found", icon: <Search fontSize="large" />, color: "#a29bfe" }, // Purple
-  { name: "Transport", icon: <DirectionsCar fontSize="large" />, color: "#747d8c" }, // Grey
-  { name: "Blood", icon: <Bloodtype fontSize="large" />, color: "#ff6b81" }, // Pink
-  { name: "Repairs", icon: <Build fontSize="large" />, color: "#5352ed" }, // Indigo
-  { name: "Pet Care", icon: <Pets fontSize="large" />, color: "#eccc68" }, // Yellow
+  { name: "Emergency", icon: <ReportProblem fontSize="large" />, color: "#ff4757" },
+  { name: "Medical", icon: <LocalPharmacy fontSize="large" />, color: "#1e90ff" },
+  { name: "Groceries", icon: <ShoppingCart fontSize="large" />, color: "#2ed573" },
+  { name: "Food", icon: <Fastfood fontSize="large" />, color: "#ffa502" },
+  { name: "Lost & Found", icon: <Search fontSize="large" />, color: "#a29bfe" },
+  { name: "Transport", icon: <DirectionsCar fontSize="large" />, color: "#747d8c" },
+  { name: "Blood", icon: <Bloodtype fontSize="large" />, color: "#ff6b81" },
+  { name: "Repairs", icon: <Build fontSize="large" />, color: "#5352ed" },
+  { name: "Pet Care", icon: <Pets fontSize="large" />, color: "#eccc68" },
 ];
 
 const Categories = () => {
+  const scrollRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+
+  // Auto-scroll logic (Left to Right)
+  useEffect(() => {
+    const slider = scrollRef.current;
+    let animationFrameId;
+
+    const scroll = () => {
+      if (!isDragging && slider) {
+        slider.scrollLeft -= 1; // Left to Right movement
+        if (slider.scrollLeft <= 0) {
+          slider.scrollLeft = slider.scrollWidth / 2;
+        }
+      }
+      animationFrameId = requestAnimationFrame(scroll);
+    };
+
+    animationFrameId = requestAnimationFrame(scroll);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isDragging]);
+
+  // Manual Drag/Scroll Logic
+  const handleMouseDown = (e) => {
+    setIsDragging(true);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeft(scrollRef.current.scrollLeft);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 2; // Scroll sensitivity
+    scrollRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleMouseUp = () => setIsDragging(false);
+
+  // Infinite effect er jonno array double
+  const extendedCategories = [...categories, ...categories];
+
   return (
-    <Box 
-      sx={{ 
-        py: 10, 
-        background: 'linear-gradient(to right, #2c3e50, #4ca1af)', 
-        color: 'white',
-        position: 'relative',
-        overflow: 'hidden'
-      }}
-    >
-      {/* Background Pattern */}
-      <Box sx={{
-        position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
-        backgroundImage: 'url("https://www.transparenttextures.com/patterns/cubes.png")',
-        opacity: 0.1
-      }} />
-
-      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
-        <Typography 
-          variant="h3" 
-          align="center" 
-          sx={{ fontWeight: 'bold', mb: 6, textShadow: '0 4px 10px rgba(0,0,0,0.3)' }}
-        >
-          What do you need help with?
-        </Typography>
-
-        <Grid container spacing={3} justifyContent="center">
-          {categories.map((cat, index) => (
-            <Grid item key={index}>
-              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-                <Paper
-                  elevation={3}
-                  sx={{
-                    width: 140,
-                    height: 140,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 4,
-                    bgcolor: 'rgba(255,255,255,0.1)',
-                    backdropFilter: 'blur(5px)',
-                    color: 'white',
-                    cursor: 'pointer',
-                    border: '1px solid rgba(255,255,255,0.2)',
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      bgcolor: cat.color,
-                      borderColor: cat.color,
-                      boxShadow: `0 0 20px ${cat.color}`
-                    }
-                  }}
-                >
-                  <Box sx={{ mb: 1 }}>{cat.icon}</Box>
-                  <Typography variant="h6" sx={{ fontSize: '0.9rem', fontWeight: 600, textAlign: 'center' }}>
-                    {cat.name}
-                  </Typography>
-                </Paper>
-              </motion.div>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-    </Box>
+    <section className="categories-section">
+      <div className="container">
+        <h2 className="categories-title">What do you need help with?</h2>
+        
+        <div className="categories-wrapper">
+          <div 
+            className={`categories-grid ${isDragging ? 'dragging' : ''}`}
+            ref={scrollRef}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+          >
+            {extendedCategories.map((cat, index) => (
+              <div 
+                key={index} 
+                className="category-card" 
+                style={{ '--accent-color': cat.color }}
+              >
+                <div className="icon-box" style={{ color: cat.color }}>
+                  {cat.icon}
+                </div>
+                <span className="category-name">{cat.name}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 

@@ -1,0 +1,128 @@
+/* Section Base Styling */
+.categories-section {
+  padding: 80px 0;
+  background-color: #ffffff; /* White background */
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+.categories-title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #1a1a1a;
+  margin-bottom: 50px;
+  font-weight: 800;
+  padding: 0 20px;
+}
+
+/* Scroll Wrapper */
+.categories-wrapper {
+  width: 100%;
+  position: relative;
+  cursor: grab;
+}
+
+.categories-grid {
+  display: flex;
+  gap: 25px;
+  overflow-x: hidden;
+  padding: 20px;
+  scroll-behavior: auto;
+  user-select: none;
+}
+
+.categories-grid.dragging {
+  cursor: grabbing;
+}
+
+/* Card Styling */
+.category-card {
+  min-width: 180px;
+  height: 180px;
+  background: #ffffff;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Soft shadow on white bg */
+  border: 1px solid #f0f0f0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.icon-box {
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+
+.category-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #444;
+}
+
+/* Hover Effects */
+.category-card:hover {
+  background-color: var(--accent-color);
+  transform: translateY(-12px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.category-card:hover .icon-box,
+.category-card:hover .category-name {
+  color: #ffffff !important;
+}
+
+/* Responsive Media Queries */
+
+/* Tablets (Max 1024px) */
+@media (max-width: 1024px) {
+  .categories-title {
+    font-size: 2rem;
+  }
+  .category-card {
+    min-width: 150px;
+    height: 150px;
+  }
+}
+
+/* Mobile Devices (Max 768px) */
+@media (max-width: 768px) {
+  .categories-section {
+    padding: 50px 0;
+  }
+  .categories-title {
+    font-size: 1.75rem;
+    margin-bottom: 30px;
+  }
+  .category-card {
+    min-width: 130px;
+    height: 130px;
+    border-radius: 18px;
+  }
+  .category-name {
+    font-size: 0.95rem;
+  }
+  .categories-grid {
+    gap: 15px;
+  }
+}
+
+/* Very Small Screens (Max 480px) */
+@media (max-width: 480px) {
+  .categories-title {
+    font-size: 1.5rem;
+  }
+  .category-card {
+    min-width: 110px;
+    height: 110px;
+  }
+  .category-name {
+    font-size: 0.85rem;
+  }
+}
+
+/* Scrollbar hide */
+.categories-grid::-webkit-scrollbar {
+  display: none;
+}

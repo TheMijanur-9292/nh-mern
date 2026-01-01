@@ -1,64 +1,65 @@
 import React from 'react';
-import { Box, Container, Typography, Stack } from '@mui/material';
-import { Map, Chat, HealthAndSafety, East } from '@mui/icons-material';
+import { Box, Container, Typography } from '@mui/material';
+import { Map, Chat, HealthAndSafety, East, KeyboardDoubleArrowDown } from '@mui/icons-material';
 import { motion } from 'framer-motion';
-
-// CSS Import
 import './HowItWorks.css';
 
+const steps = [
+  { 
+    icon: <Map />, 
+    title: "Spot Requests", 
+    desc: "Open the map to see real-time help requests near your location." 
+  },
+  { 
+    icon: <Chat />, 
+    title: "Connect Fast", 
+    desc: "Chat instantly with your neighbor to coordinate the help safely." 
+  },
+  { 
+    icon: <HealthAndSafety />, 
+    title: "Earn Trust", 
+    desc: "Get rated and earn badges for your kindness and contributions." 
+  }
+];
+
 const HowItWorks = () => {
-  const steps = [
-    { 
-      icon: <Map sx={{ fontSize: 35 }} />, 
-      title: "Spot Requests", 
-      desc: "Open the map to see real-time help requests near your location." 
-    },
-    { 
-      icon: <Chat sx={{ fontSize: 35 }} />, 
-      title: "Connect Fast", 
-      desc: "Chat instantly with your neighbor to coordinate the help safely." 
-    },
-    { 
-      icon: <HealthAndSafety sx={{ fontSize: 35 }} />, 
-      title: "Earn Trust", 
-      desc: "Get rated and earn badges for your kindness and contributions." 
-    }
-  ];
-
   return (
-    <Box className="how-it-works-root">
+    <Box component="section" className="hiw-section">
       <Container maxWidth="lg">
-        <Typography variant="h3" className="section-title">
-          How It Works
-        </Typography>
+        <div className="hiw-header">
+          <Typography variant="h3" className="hiw-main-title">
+            How It Works
+          </Typography>
+          <div className="hiw-title-line"></div>
+        </div>
 
-        <Box className="steps-wrapper">
+        <Box className="hiw-steps-container">
           {steps.map((item, index) => (
             <React.Fragment key={index}>
-              {/* Step Box */}
               <motion.div 
-                className="step-box"
-                initial={{ opacity: 0, y: 30 }}
+                className="hiw-card"
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.2 }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
               >
-                <div className="icon-circle">
+                <div className="hiw-icon-wrapper">
                   {item.icon}
+                  <span className="hiw-step-number">{index + 1}</span>
                 </div>
-                <Typography variant="h6" className="step-title">
+                <Typography variant="h6" className="hiw-step-title">
                   {item.title}
                 </Typography>
-                <Typography variant="body2" className="step-desc">
+                <Typography variant="body2" className="hiw-step-desc">
                   {item.desc}
                 </Typography>
               </motion.div>
 
-              {/* Arrow between boxes (Only show between items) */}
               {index < steps.length - 1 && (
-                <Box className="step-arrow">
-                  <East sx={{ fontSize: 40 }} />
-                </Box>
+                <div className="hiw-connector">
+                  <East className="connector-arrow-desktop" />
+                  <KeyboardDoubleArrowDown className="connector-arrow-mobile" />
+                </div>
               )}
             </React.Fragment>
           ))}

@@ -1,109 +1,109 @@
-/* মেইন নেভবার কন্টেইনার */
 .navbar-root {
-    background-color: rgba(255, 255, 255, 0.95) !important;
-    backdrop-filter: blur(8px);
-    color: #333 !important;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
-    width: 100%;
+  background-color: #ffffff !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05) !important;
+  color: #333 !important;
 }
 
-/* লোগো টেক্সট */
 .logo-text {
-    font-weight: 900 !important;
-    text-decoration: none;
-    color: #764ba2;
-    letter-spacing: -1px;
+  font-weight: 800 !important;
+  color: #1e90ff !important;
+  text-decoration: none;
+  letter-spacing: -0.5px;
 }
 
-/* ডেস্কটপ বাটন স্ট্যাক */
 .desktop-stack {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 24px; /* স্ট্যাক স্পেসিং ৩ (৩*৮=২৪পিক্সেল) */
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-/* হোম বাটন */
-.nav-home-btn {
-    font-weight: 600 !important;
-    border-radius: 0 !important;
-    height: 64px;
+.nav-btn {
+  color: #555 !important;
+  text-transform: capitalize !important;
+  font-weight: 600 !important;
 }
 
-.nav-home-active {
-    color: #764ba2 !important;
-    border-bottom: 2px solid #764ba2 !important;
+.nav-btn.active {
+  color: #1e90ff !important;
 }
 
-.nav-home-inactive {
-    color: #555 !important;
+/* Subscription Box Styling */
+.subscribe-box {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 30px;
+  padding: 4px 8px;
+  border: 1px solid #e2e8f0;
 }
 
-/* ম্যাপ বাটন */
-.nav-map-btn {
-    border-radius: 20px !important;
-    padding-left: 24px !important;
-    padding-right: 24px !important;
+.sub-input {
+  border: none;
+  background: transparent;
+  padding: 5px 10px;
+  outline: none;
+  font-size: 0.85rem;
+  width: 150px;
 }
 
-.nav-map-active {
-    border-color: #764ba2 !important;
-    color: #764ba2 !important;
+.sub-btn {
+  border: none;
+  background: #1e90ff;
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-.nav-map-inactive {
-    background-color: #764ba2 !important;
-    color: #fff !important;
+.sub-btn:hover {
+  background: #0070e0;
 }
 
-/* মেসেজ আইকন বাটন */
-.msg-icon-active {
-    color: #764ba2 !important;
-    background-color: rgba(118, 75, 162, 0.1) !important;
+/* Auth Buttons */
+.auth-btn-text {
+  color: #1e90ff !important;
+  font-weight: 700 !important;
 }
 
-.msg-icon-inactive {
-    color: #888 !important;
+.auth-btn-contained {
+  background-color: #1e90ff !important;
+  border-radius: 20px !important;
+  padding: 6px 20px !important;
 }
 
-/* প্রোফাইল এরিয়া */
-.profile-welcome {
-    text-align: right;
-    margin-right: 8px;
+.user-avatar {
+  background-color: #1e90ff !important;
+  cursor: pointer;
+  width: 38px !important;
+  height: 38px !important;
 }
 
-.avatar-btn {
-    padding: 0 !important;
-    border: 2px solid #764ba2 !important;
+/* Credit in Menu */
+.menu-credit {
+  padding: 15px;
+  text-align: center;
+  background: #f8fafc;
 }
 
-/* মোবাইল মেনু আইকন */
-.mobile-icon-active {
-    color: #764ba2 !important;
+.credit-link {
+  display: block;
+  color: #1e90ff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.85rem;
 }
 
-.mobile-icon-inactive {
-    color: #555 !important;
+.credit-link:hover {
+  text-decoration: underline;
 }
 
-/* ডেক্সটপ ইউজার সেকশন (Hide on small) */
-@media (max-width: 1200px) {
-    .profile-welcome {
-        display: none;
-    }
-}
-
-/* প্রোফাইল মেনু পেপার স্টাইল */
-.menu-paper {
-    border-radius: 12px !important;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
-    width: 200px;
-}
-
-/* রেসপন্সিভ মিডিয়া কুয়েরি (পার্সেন্টেজ বেসড) */
-@media (max-width: 900px) {
-    /* Toolbar padding adjustments */
-    .desktop-stack {
-        display: none;
-    }
+/* Responsive */
+@media (max-width: 600px) {
+  .logo-text {
+    font-size: 1.2rem !important;
+  }
 }
