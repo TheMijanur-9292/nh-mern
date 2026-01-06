@@ -6,8 +6,10 @@ import {
 import { motion } from 'framer-motion';
 import { 
   Email, Phone, LocationOn, Send, 
-  Facebook, LinkedIn, Instagram, Twitter, SupportAgent 
+  Facebook, LinkedIn, Instagram, Twitter 
 } from '@mui/icons-material';
+import Footer from '../components/Footer';
+import './ContactUs.css';
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
@@ -19,118 +21,110 @@ const ContactUs = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // এখানে আপনি আপনার ব্যাকএন্ড এপিআই কল করতে পারেন
-    console.log("Contact Form Data:", formData);
-    setToast({ open: true, message: 'Thank you! Your message has been sent.', severity: 'success' });
+    setToast({ open: true, message: 'Message sent successfully!', severity: 'success' });
     setFormData({ name: '', email: '', subject: '', message: '' });
   };
 
-  const contactInfo = [
-    { icon: <Email />, label: "Email Us", value: "support@neighborhelp.com", color: '#764ba2' },
-    { icon: <Phone />, label: "Call Us", value: "+880 1234 567 890", color: '#667eea' },
-    { icon: <LocationOn />, label: "Our Office", value: "Dhaka, Bangladesh", color: '#ff4757' }
-  ];
-
   return (
-    <Box sx={{ bgcolor: '#f8f9fb', minHeight: '100vh', py: { xs: 6, md: 10 } }}>
-      <Container maxWidth="lg">
+    <Box className="contact-root-dark">
+      <Container maxWidth="lg" className="contact-main-wrap">
         
-        {/* Header Section */}
-        <Box sx={{ textAlign: 'center', mb: 8 }}>
-          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-            <Typography variant="overline" sx={{ color: '#764ba2', fontWeight: 'bold', letterSpacing: 2 }}>
-              Get In Touch
-            </Typography>
-            <Typography variant="h2" sx={{ fontWeight: 900, mb: 2 }}>
-              We're Here to <span style={{ color: '#764ba2' }}>Help</span>
-            </Typography>
-            <Typography variant="body1" sx={{ color: 'text.secondary', maxWidth: 600, mx: 'auto' }}>
-              আপনার কোনো প্রশ্ন, ফিডব্যাক বা সাহায্যের প্রয়োজন থাকলে আমাদের জানান। আমাদের টিম দ্রুত আপনার সাথে যোগাযোগ করবে।
+        {/* Top Header */}
+        <Box className="header-text-area">
+          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            <Typography variant="overline" className="top-tag-neon">CONTACT US</Typography>
+            <Typography variant="h2" className="top-h2-white">Let's <span className="grad-span">Connect</span> With Us</Typography>
+            <Typography variant="body1" className="top-p-gray">
+              Have questions, feedback, or need assistance? Our dedicated team is here to help you. Reach out to us through any of the channels below or fill out the contact form.
             </Typography>
           </motion.div>
         </Box>
 
-        <Grid container spacing={5}>
-          {/* ১. কন্টাক্ট ইনফরমেশন কার্ডস */}
-          <Grid item xs={12} md={4}>
-            <Stack spacing={3}>
-              {contactInfo.map((info, index) => (
-                <motion.div key={index} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.1 }}>
-                  <Paper elevation={0} sx={{ p: 3, borderRadius: '20px', display: 'flex', alignItems: 'center', gap: 2, border: '1px solid #eee' }}>
-                    <Box sx={{ bgcolor: info.color, color: '#fff', p: 1.5, borderRadius: '12px', display: 'flex' }}>
-                      {info.icon}
-                    </Box>
-                    <Box>
-                      <Typography variant="caption" color="text.secondary" fontWeight="bold">{info.label}</Typography>
-                      <Typography variant="body1" fontWeight="bold">{info.value}</Typography>
-                    </Box>
-                  </Paper>
-                </motion.div>
-              ))}
-
-              <Paper elevation={0} sx={{ p: 3, borderRadius: '20px', bgcolor: '#764ba2', color: '#fff', textAlign: 'center' }}>
-                <SupportAgent sx={{ fontSize: 40, mb: 1 }} />
-                <Typography variant="h6" fontWeight="bold">24/7 Support</Typography>
-                <Typography variant="body2" sx={{ opacity: 0.8, mb: 2 }}>Emergency requests are handled with top priority.</Typography>
-                <Stack direction="row" justifyContent="center" spacing={1}>
-                  {[<Facebook />, <Twitter />, <LinkedIn />, <Instagram />].map((icon, i) => (
-                    <IconButton key={i} sx={{ color: '#fff', bgcolor: 'rgba(255,255,255,0.1)', '&:hover': { bgcolor: 'rgba(255,255,255,0.2)' } }}>
-                      {icon}
-                    </IconButton>
-                  ))}
-                </Stack>
-              </Paper>
-            </Stack>
-          </Grid>
-
-          {/* ২. কন্টাক্ট ফর্ম */}
-          <Grid item xs={12} md={8}>
-            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }}>
-              <Paper elevation={0} sx={{ p: { xs: 3, md: 5 }, borderRadius: '30px', border: '1px solid #eee' }}>
-                <Typography variant="h5" fontWeight="bold" sx={{ mb: 4 }}>Send us a Message</Typography>
-                <form onSubmit={handleSubmit}>
-                  <Grid container spacing={3}>
-                    <Grid item xs={12} sm={6}>
-                      <TextField fullWidth label="Your Name" name="name" value={formData.name} onChange={handleChange} required variant="filled" />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <TextField fullWidth label="Email Address" name="email" type="email" value={formData.email} onChange={handleChange} required variant="filled" />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField fullWidth label="Subject" name="subject" value={formData.subject} onChange={handleChange} required variant="filled" />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <TextField fullWidth label="How can we help?" name="message" value={formData.message} onChange={handleChange} multiline rows={4} required variant="filled" />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Button 
-                        type="submit" 
-                        variant="contained" 
-                        size="large" 
-                        endIcon={<Send />}
-                        sx={{ 
-                          bgcolor: '#764ba2', 
-                          px: 6, 
-                          py: 1.5, 
-                          borderRadius: '30px',
-                          textTransform: 'none',
-                          fontSize: '1.1rem',
-                          '&:hover': { bgcolor: '#5b3a7d' } 
-                        }}
-                      >
-                        Submit Message
-                      </Button>
-                    </Grid>
+        {/* 1. FORM SECTION (Always Top & Full Width) */}
+        <Box className="form-container-full">
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }}>
+            <Paper className="dark-glass-form" elevation={0}>
+              <Typography variant="h4" className="form-h4-white">Send Us a Message</Typography>
+              <Typography variant="body1" className="form-p-gray">
+                Fill out the form below and we'll get back to you as soon as possible.
+              </Typography>
+              
+              <form onSubmit={handleSubmit}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} sm={6}>
+                    <TextField fullWidth label="Full Name" name="name" value={formData.name} onChange={handleChange} required variant="filled" className="neon-input" />
                   </Grid>
-                </form>
-              </Paper>
-            </motion.div>
+                  <Grid item xs={12} sm={6}>
+                    <TextField fullWidth label="Email Address" name="email" type="email" value={formData.email} onChange={handleChange} required variant="filled" className="neon-input" />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField fullWidth label="Subject" name="subject" value={formData.subject} onChange={handleChange} required variant="filled" className="neon-input" />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField fullWidth label="Your Message" name="message" value={formData.message} onChange={handleChange} multiline rows={4} required variant="filled" className="neon-input" />
+                  </Grid>
+                  <Grid item xs={12} className="btn-center">
+                    <Button type="submit" variant="contained" className="neon-send-btn" endIcon={<Send />}>
+                      Send Message
+                    </Button>
+                  </Grid>
+                </Grid>
+              </form>
+            </Paper>
+          </motion.div>
+        </Box>
+
+        {/* 2. INFO SECTION (Laptop side-by-side, Mobile stacked) */}
+        <Box className="info-section-grid">
+          <Grid container spacing={3}>
+            {/* Email Box */}
+            <Grid item xs={12} md={4}>
+              <motion.div whileHover={{ y: -10 }} className="info-box-vibe">
+                <Box className="icon-circle-neon red-neon"><Email /></Box>
+                <Typography variant="h6" className="info-title">Email Address</Typography>
+                <Typography variant="body1" className="info-val">support@neighborhelp.com</Typography>
+                <Typography variant="body2" className="info-sub">We'll respond within 24 hours</Typography>
+              </motion.div>
+            </Grid>
+
+            {/* Phone Box */}
+            <Grid item xs={12} md={4}>
+              <motion.div whileHover={{ y: -10 }} className="info-box-vibe">
+                <Box className="icon-circle-neon blue-neon"><Phone /></Box>
+                <Typography variant="h6" className="info-title">Phone Number</Typography>
+                <Typography variant="body1" className="info-val">+91 1234567890</Typography>
+                <Typography variant="body2" className="info-sub">Monday to Friday, 9AM to 6PM</Typography>
+              </motion.div>
+            </Grid>
+
+            {/* Address Box */}
+            <Grid item xs={12} md={4}>
+              <motion.div whileHover={{ y: -10 }} className="info-box-vibe">
+                <Box className="icon-circle-neon green-neon"><LocationOn /></Box>
+                <Typography variant="h6" className="info-title">Office Address</Typography>
+                <Typography variant="body1" className="info-val">Ecospace, Newtown</Typography>
+                <Typography variant="body2" className="info-sub">Kolkata-700156, India</Typography>
+              </motion.div>
+            </Grid>
           </Grid>
-        </Grid>
+        </Box>
+
+        {/* Social Dock */}
+        <Box className="social-dock-center">
+          <Stack direction="row" spacing={2} justifyContent="center">
+            <IconButton className="neon-icon-btn"><Facebook /></IconButton>
+            <IconButton className="neon-icon-btn"><LinkedIn /></IconButton>
+            <IconButton className="neon-icon-btn"><Twitter /></IconButton>
+            <IconButton className="neon-icon-btn"><Instagram /></IconButton>
+          </Stack>
+        </Box>
+        
       </Container>
 
+      <Footer />
+
       <Snackbar open={toast.open} autoHideDuration={4000} onClose={() => setToast({ ...toast, open: false })} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-        <Alert severity={toast.severity} variant="filled" sx={{ width: '100%', borderRadius: '12px' }}>{toast.message}</Alert>
+        <Alert severity={toast.severity} variant="filled" sx={{ borderRadius: '10px' }}>{toast.message}</Alert>
       </Snackbar>
     </Box>
   );

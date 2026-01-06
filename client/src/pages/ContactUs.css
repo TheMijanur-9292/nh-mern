@@ -1,0 +1,111 @@
+/* Base Root - DARK MODE */
+.contact-root-dark {
+    background-color: #0a0a0c !important;
+    min-height: 100vh;
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+.contact-main-wrap {
+    padding-top: 60px;
+    padding-bottom: 80px;
+}
+
+/* Header Area */
+.header-text-area {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.top-tag-neon { color: #8b5cf6; font-weight: 800 !important; letter-spacing: 4px; }
+.top-h2-white { font-weight: 900 !important; font-size: 3.5rem !important; color: #fff; margin: 10px 0 !important; }
+.grad-span {
+    background: linear-gradient(90deg, #00f2ff, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.top-p-gray { max-width: 800px; margin: 0 auto !important; color: #aaa; font-size: 1.1rem; }
+
+/* 1. FORM SECTION - FULL WIDTH */
+.form-container-full {
+    margin-bottom: 50px;
+}
+
+.dark-glass-form {
+    background: rgba(255, 255, 255, 0.03) !important;
+    padding: 5% !important;
+    border-radius: 30px !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(10px);
+}
+
+.form-h4-white { font-weight: 800 !important; color: #fff; margin-bottom: 10px !important; }
+.form-p-gray { color: #888; margin-bottom: 40px !important; }
+
+/* Neon Input Fields */
+.neon-input .MuiFilledInput-root {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #fff !important;
+    border-radius: 12px !important;
+}
+.neon-input .MuiInputLabel-root { color: #666 !important; }
+.neon-input .Mui-focused .MuiInputLabel-root { color: #00f2ff !important; }
+
+/* Neon Button */
+.neon-send-btn {
+    background: linear-gradient(45deg, #00f2ff, #8b5cf6) !important;
+    padding: 15px 60px !important;
+    border-radius: 50px !important;
+    font-weight: 900 !important;
+    text-transform: none !important;
+    font-size: 1.1rem !important;
+    box-shadow: 0 10px 30px rgba(0, 242, 255, 0.3) !important;
+}
+
+/* 2. INFO SECTION - 3 COLUMNS SIDE BY SIDE ON LAPTOP */
+.info-section-grid {
+    margin-bottom: 60px;
+}
+
+.info-box-vibe {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 30px 20px;
+    border-radius: 24px;
+    text-align: center;
+    height: 100%;
+    transition: 0.4s;
+}
+
+.icon-circle-neon {
+    width: 60px; height: 60px; border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 15px; color: #fff;
+}
+
+.red-neon { background: rgba(244, 63, 94, 0.15); border: 1px solid #f43f5e; color: #f43f5e; }
+.blue-neon { background: rgba(59, 130, 246, 0.15); border: 1px solid #3b82f6; color: #3b82f6; }
+.green-neon { background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #10b981; }
+
+.info-title { font-weight: 800 !important; color: #fff; margin-bottom: 8px !important; }
+.info-val { font-weight: 600 !important; color: #ddd; }
+.info-sub { color: #666; font-size: 0.85rem !important; }
+
+/* Social Center */
+.social-dock-center { padding-bottom: 40px; }
+.neon-icon-btn { color: #8b5cf6 !important; background: rgba(255,255,255,0.03) !important; transition: 0.3s !important; margin: 0 10px !important; }
+.neon-icon-btn:hover { background: #8b5cf6 !important; color: #fff !important; transform: scale(1.2); }
+
+/* RESPONSIVENESS */
+
+@media (max-width: 900px) {
+    .top-h2-white { font-size: 2.8rem !important; }
+    /* Grid system automatically handles 4 -> 12 for tablet/mobile */
+}
+
+@media (max-width: 600px) {
+    .top-h2-white { font-size: 2.2rem !important; }
+    .dark-glass-form { padding: 30px 20px !important; border-radius: 20px !important; }
+    .neon-send-btn { width: 100%; }
+    .contact-main-wrap { padding-top: 30px; }
+}
