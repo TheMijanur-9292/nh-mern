@@ -22,40 +22,40 @@ const Footer = () => {
     <Box 
       component="footer" 
       sx={{ 
-        bgcolor: '#0a0a0a', 
-        color: '#fff', 
+        bgcolor: '#ffffff', 
+        color: '#1f2937', 
         pt: 8, 
         pb: 4, 
-        borderTop: '5px solid #1e90ff' 
+        borderTop: '2px solid rgba(99, 102, 241, 0.2)' 
       }}
     >
       <Container maxWidth="lg">
         <Grid container spacing={5}>
           
           {/* 1. Brand Section */}
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={3.5}>
             <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
-              <VolunteerActivism sx={{ color: '#1e90ff', fontSize: 32 }} />
-              <Typography variant="h5" sx={{ fontWeight: '900', letterSpacing: '-1px' }}>
+              <VolunteerActivism sx={{ background: 'linear-gradient(135deg, #6366F1 0%, #14B8A6 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: 32 }} />
+              <Typography variant="h5" sx={{ fontWeight: '900', letterSpacing: '-1px', background: 'linear-gradient(135deg, #6366F1 0%, #14B8A6 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 NeighborHelp
               </Typography>
             </Stack>
-            <Typography variant="body2" sx={{ color: '#aaa', lineHeight: 1.8, mb: 3 }}>
-              Building a strong community of mutual help and trust. We use technology to connect neighbors during emergencies and everyday needs.
+            <Typography variant="body2" sx={{ color: '#6b7280', lineHeight: 1.6, mb: 3, fontSize: '0.85rem' }}>
+              Building a strong community of mutual help and trust. We connect neighbors during emergencies and everyday needs.
             </Typography>
             <Stack direction="row" spacing={1}>
               {[
-                { icon: <Facebook />, color: '#1877F2' },
-                { icon: <Twitter />, color: '#1DA1F2' },
-                { icon: <Instagram />, color: '#E4405F' },
-                { icon: <LinkedIn />, color: '#0077b5' }
+                { icon: <Facebook />, color: '#6366F1' },
+                { icon: <Twitter />, color: '#14B8A6' },
+                { icon: <Instagram />, color: '#6366F1' },
+                { icon: <LinkedIn />, color: '#14B8A6' }
               ].map((social, index) => (
                 <IconButton 
                   key={index}
                   sx={{ 
                     color: '#fff', 
-                    bgcolor: 'rgba(255,255,255,0.05)', 
-                    '&:hover': { bgcolor: social.color, transform: 'translateY(-3px)' },
+                    background: `linear-gradient(135deg, ${social.color} 0%, #14B8A6 100%)`,
+                    '&:hover': { transform: 'translateY(-3px)', boxShadow: `0 8px 16px ${social.color}40` },
                     transition: 'all 0.3s'
                   }}
                 >
@@ -66,8 +66,8 @@ const Footer = () => {
           </Grid>
 
           {/* 2. Platform Links */}
-          <Grid item xs={6} md={2}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 3 }}>Platform</Typography>
+          <Grid item xs={12} sm={4} md={2.8}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 3, color: '#1f2937', fontSize: '0.95rem' }}>Platform</Typography>
             <Stack spacing={1.5}>
               {[
                 { name: 'Home', path: '/' },
@@ -79,7 +79,7 @@ const Footer = () => {
                   key={link.name}
                   component={Link} 
                   to={link.path}
-                  sx={{ color: '#aaa', textDecoration: 'none', '&:hover': { color: '#1e90ff' }, fontSize: '0.9rem' }}
+                  sx={{ color: '#6b7280', textDecoration: 'none', '&:hover': { color: '#6366F1', fontWeight: '600' }, fontSize: '0.9rem', transition: 'all 0.3s' }}
                 >
                   {link.name}
                 </MuiLink>
@@ -88,8 +88,8 @@ const Footer = () => {
           </Grid>
 
           {/* 3. Support Links */}
-          <Grid item xs={6} md={2}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 3 }}>Support</Typography>
+          <Grid item xs={12} sm={4} md={2.8}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 3, color: '#1f2937', fontSize: '0.95rem' }}>Support</Typography>
             <Stack spacing={1.5}>
               {[
                 { name: 'About Us', path: '/about' },
@@ -101,7 +101,7 @@ const Footer = () => {
                   key={link.name}
                   component={Link} 
                   to={link.path}
-                  sx={{ color: '#aaa', textDecoration: 'none', '&:hover': { color: '#1e90ff' }, fontSize: '0.9rem' }}
+                  sx={{ color: '#6b7280', textDecoration: 'none', '&:hover': { color: '#14B8A6', fontWeight: '600' }, fontSize: '0.9rem', transition: 'all 0.3s' }}
                 >
                   {link.name}
                 </MuiLink>
@@ -110,9 +110,9 @@ const Footer = () => {
           </Grid>
 
           {/* 4. Newsletter Section */}
-          <Grid item xs={12} md={4}>
-            <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 3 }}>Stay Updated</Typography>
-            <Typography variant="body2" sx={{ color: '#aaa', mb: 2 }}>
+          <Grid item xs={12} sm={4} md={2.9}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 3, color: '#1f2937', fontSize: '0.95rem' }}>Stay Updated</Typography>
+            <Typography variant="body2" sx={{ color: '#6b7280', mb: 2, fontSize: '0.85rem' }}>
               Subscribe for email notifications about help requests near you.
             </Typography>
             <Box component="form" onSubmit={handleSubscribe} sx={{ position: 'relative' }}>
@@ -124,13 +124,16 @@ const Footer = () => {
                 onChange={(e) => setSubscribeEmail(e.target.value)}
                 required
                 sx={{
-                  bgcolor: 'rgba(255,255,255,0.05)',
+                  bgcolor: 'rgba(99, 102, 241, 0.05)',
                   borderRadius: '30px',
                   '& .MuiOutlinedInput-root': {
-                    color: '#fff',
+                    color: '#1f2937',
                     borderRadius: '30px',
-                    '& fieldset': { borderColor: 'rgba(255,255,255,0.2)' },
-                  }
+                    '& fieldset': { borderColor: 'rgba(99, 102, 241, 0.2)' },
+                    '&:hover fieldset': { borderColor: 'rgba(99, 102, 241, 0.3)' },
+                    '&.Mui-focused fieldset': { borderColor: '#6366F1' }
+                  },
+                  '& .MuiOutlinedInput-input::placeholder': { color: '#9ca3af', opacity: 1 }
                 }}
               />
               <Button 
@@ -138,8 +141,8 @@ const Footer = () => {
                 variant="contained"
                 sx={{ 
                   position: 'absolute', right: 4, top: 4, borderRadius: '25px',
-                  minWidth: '40px', bgcolor: '#1e90ff',
-                  '&:hover': { bgcolor: '#0070e0' }
+                  minWidth: '40px', background: 'linear-gradient(135deg, #6366F1 0%, #14B8A6 100%)',
+                  '&:hover': { boxShadow: '0 8px 16px rgba(99, 102, 241, 0.3)' }
                 }}
               >
                 <Send sx={{ fontSize: 20 }} />
@@ -148,23 +151,23 @@ const Footer = () => {
           </Grid>
         </Grid>
 
-        <Divider sx={{ my: 6, bgcolor: 'rgba(255,255,255,0.1)' }} />
+        <Divider sx={{ my: 6, bgcolor: 'rgba(99, 102, 241, 0.1)' }} />
 
         {/* Footer Bottom with Credit */}
         <Box sx={{ 
           display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, 
           justifyContent: 'space-between', alignItems: 'center', gap: 2
         }}>
-          <Typography variant="body2" sx={{ color: '#666' }}>
+          <Typography variant="body2" sx={{ color: '#9ca3af' }}>
             &copy; {new Date().getFullYear()} NeighborHelp. All rights reserved.
           </Typography>
           
-          <Typography variant="body2" sx={{ color: '#888' }}>
+          <Typography variant="body2" sx={{ color: '#6b7280' }}>
             Developed & Designed by{' '}
             <MuiLink 
               href="https://github.com/themijanur-9292" 
               target="_blank" 
-              sx={{ color: '#1e90ff', fontWeight: '700', textDecoration: 'none' }}
+              sx={{ background: 'linear-gradient(135deg, #6366F1 0%, #14B8A6 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: '700', textDecoration: 'none' }}
             >
               Md Mijanur Molla
             </MuiLink>

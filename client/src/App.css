@@ -6,16 +6,17 @@
   width: 100%;
   overflow-x: hidden;
   background-color: #f0f2f5; /* Light gray background */
+  padding-top: 64px;
 }
 
 /* Main Content Area */
 .main-content {
   flex-grow: 1;
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  display: block;
   padding: 0;
   margin: 0;
+  min-height: calc(100vh - 64px);
 }
 
 /* Responsive Adjustments */

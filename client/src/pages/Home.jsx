@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box } from '@mui/material';
 import HeroSection from '../components/HeroSection';
 import Stats from '../components/Stats';
@@ -9,8 +9,11 @@ import Footer from '../components/Footer';
 
 
 const Home = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
-    <Box sx={{ overflowX: 'hidden', bgcolor: '#f0f2f5' }}>
+    <Box sx={{ overflowX: 'hidden', bgcolor: '#ffffff' }}>
       <HeroSection />
       <Stats />
       <HowItWorks />

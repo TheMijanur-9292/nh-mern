@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Box, CssBaseline } from '@mui/material'; 
 
 // Existing Imports
@@ -45,10 +45,11 @@ function App() {
 
             {/* Support Routes */}
             <Route path="/about" element={<AboutUs />} />
-            <Route path="/safety" element={<SafetyGuide />} />
+            <Route path="/safety-guide" element={<SafetyGuide />} />
+            <Route path="/safety" element={<Navigate to="/safety-guide" replace />} />
             <Route path="/success-stories" element={<SuccessStories />} />
             <Route path="/contact" element={<ContactUs />} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           </Routes>
         </main>
         

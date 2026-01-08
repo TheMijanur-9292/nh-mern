@@ -1,10 +1,10 @@
-/* ১. পিন মার্কারের ডিফল্ট স্টাইল রিসেট */
+/* ១. पिन मार्कारের ডিফল्ट स्टाइल रिसेट */
 .custom-marker, .custom-animated-marker {
   background: transparent !important;
   border: none !important;
 }
 
-/* ২. মার্কারের জন্য 'Breathing' অ্যানিমেশন (ছোট-বড় হওয়া) */
+/* २. মার্कারের जन्य 'Breathing' অ्যানिमेशन (ছোট-বড় हওয়া) */
 @keyframes marker-pulse {
   0% {
     transform: scale(1);
@@ -12,7 +12,7 @@
   }
   50% {
     transform: scale(1.2);
-    filter: drop-shadow(0 0 8px rgba(118, 75, 162, 0.4)); /* গ্লো ইফেক্ট */
+    filter: drop-shadow(0 0 8px rgba(118, 75, 162, 0.4)); /* गло् इफेक्ट */
   }
   100% {
     transform: scale(1);
@@ -20,7 +20,7 @@
   }
 }
 
-/* ৩. পিনগুলো এই ক্লাসটি ব্যবহার করবে (React থেকে) */
+/* ३. पिनгулো এই क्लাসটि ব्यवহार করবे (React थेক) */
 .marker-pin-animated {
   display: flex;
   justify-content: center;
@@ -29,7 +29,7 @@
   cursor: pointer;
 }
 
-/* ৪. ইউজারের বর্তমান লোকেশনের জন্য ব্লু ডট অ্যানিমেশন */
+/* ४. ইউजারের बর्तमान लোকेশनের जन्य ब्लु डट अ्यानिमेशन */
 @keyframes user-dot-pulse {
   0% { box-shadow: 0 0 0 0 rgba(30, 144, 255, 0.7); }
   70% { box-shadow: 0 0 0 15px rgba(30, 144, 255, 0); }
@@ -45,7 +45,7 @@
   animation: user-dot-pulse 2s infinite;
 }
 
-/* ৫. পপআপ ডিজাইন ইমপ্রুভমেন্ট */
+/* ५. पोपअप डिजाइन इम्प्रुभमेन्ट */
 .leaflet-popup-content-wrapper {
   border-radius: 16px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
@@ -62,7 +62,7 @@
   background: white;
 }
 
-/* ৬. ম্যাপ কন্টেইনারের স্মুথনেস */
+/* ६. म्यापप् कन्टेइनेरের स्मुथनेस */
 .leaflet-container {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

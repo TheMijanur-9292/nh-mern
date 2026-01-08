@@ -6,12 +6,11 @@
     justify-content: center;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #6366F1 0%, #14B8A6 100%);
     color: white;
     /* প্রিমিয়াম কার্ভ ডিজাইন */
     clip-path: ellipse(150% 100% at 50% 0%);
-    padding-bottom: 5%;
-}
+    padding-bottom: 5%;    margin-top: 0px;}
 
 /* এনিমেটেড ব্যাকগ্রাউন্ড শেপস */
 .hero-wrapper::before {

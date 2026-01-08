@@ -1,121 +1,287 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap');
 
+/* White Theme - AboutUs Page */
 .about-page-container {
-    background-color: #050505;
-    color: #fff;
+    background-color: #ffffff;
+    color: #1a1a1a;
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
 }
 
-/* Hero */
-.modern-hero {
-    min-height: 70vh;
+/* Hero Section - Unique Class Names */
+.au-hero-section {
+    min-height: 45%;
     display: flex;
     align-items: center;
     position: relative;
-    padding: 10% 5%;
+    padding: 8% 5%;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e8f4f8 100%);
 }
 
-.hero-main-title {
+.au-hero-main-title {
     font-size: clamp(2.5rem, 8vw, 5rem) !important;
     font-weight: 800 !important;
     line-height: 1.1 !important;
+    color: #1a1a1a;
 }
 
-.neon-text {
-    color: #00f2ff;
-    text-shadow: 0 0 30px rgba(0, 242, 255, 0.6);
+.au-hero-accent {
+    background: linear-gradient(135deg, #6366F1 0%, #14B8A6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-.hero-sub-text {
+.au-hero-subtitle {
     font-size: 1.2rem;
     max-width: 600px;
     margin: 30px 0 !important;
-    color: #aaa;
+    color: #555;
+    line-height: 1.6;
 }
 
-.vibrant-btn {
-    background: linear-gradient(90deg, #ff00cc, #3333ff) !important;
+.au-hero-button {
+    background: linear-gradient(135deg, #6366F1 0%, #14B8A6 100%) !important;
     color: white !important;
-    padding: 12px 35px !important;
-    border-radius: 8px !important;
+    padding: 14px 40px !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    text-transform: none !important;
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.25) !important;
+    transition: all 0.3s ease !important;
 }
 
-/* Linear Points Section */
-.values-wrapper {
-    padding: 80px 5%;
+.au-hero-button:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 12px 30px rgba(99, 102, 241, 0.35) !important;
 }
 
-.section-title {
+/* Values Section - White Background with Cards */
+.au-values-section {
+    padding: 10% 5%;
+    background: #ffffff;
+}
+
+.au-values-title {
     text-align: center;
-    margin-bottom: 60px !important;
+    margin-bottom: 8% !important;
     font-weight: 800 !important;
+    color: #1a1a1a;
+    font-size: clamp(2rem, 5vw, 3.2rem);
 }
 
-.points-container {
+.au-values-highlight {
+    color: #6366F1;
+}
+
+.au-values-cards-container {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 3%;
 }
 
-.point-row {
+.au-values-card {
     display: flex;
     align-items: flex-start;
     gap: 20px;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 15px;
-    border-left: 4px solid #00f2ff;
-    transition: 0.3s;
+    padding: 4%;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border-left: 5px solid #6366F1;
+    transition: all 0.3s ease;
 }
 
-.point-row:hover {
-    background: rgba(255, 255, 255, 0.07);
-    transform: translateX(10px);
+.au-values-card:hover {
+    background: #eff6ff;
+    transform: translateX(8px);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.1);
 }
 
-.point-icon-box {
+.au-values-icon-box {
     padding-top: 5px;
+    flex-shrink: 0;
 }
 
-.point-icon { font-size: 2rem !important; }
-.red { color: #ff4d4d; }
-.blue { color: #00f2ff; }
-.purple { color: #9933ff; }
-.yellow { color: #ffcc00; }
+.au-values-icon {
+    font-size: 2.2rem !important;
+    color: #6366F1;
+}
 
-.point-title { font-weight: 700 !important; margin-bottom: 5px !important; }
-.point-desc { color: #aaa; font-size: 0.95rem !important; }
+.au-values-card-title {
+    font-weight: 700 !important;
+    margin-bottom: 8px !important;
+    color: #1a1a1a;
+    font-size: 1.1rem;
+}
 
-/* Founder */
-.creative-founder-section { padding: 100px 5%; background: #0a0a0a; }
-.avatar-canvas { position: relative; width: 300px; height: 300px; margin: 0 auto 40px; }
-.floating-avatar { width: 100% !important; height: 100% !important; border-radius: 30% 70% 70% 30% / 30% 30% 70% 70% !important; animation: shapeMorph 6s infinite alternate ease-in-out; border: 4px solid #7832ff; }
+.au-values-card-desc {
+    color: #666;
+    font-size: 0.95rem !important;
+    line-height: 1.6;
+}
 
-@keyframes shapeMorph {
+/* Founder Section - Light Background */
+.au-founder-section {
+    padding: 10% 5%;
+    background: linear-gradient(135deg, #f0f9ff 0%, #f0fdf4 100%);
+}
+
+.au-founder-avatar-container {
+    position: relative;
+    width: 100%;
+    max-width: 350px;
+    height: 350px;
+    margin: 0 auto 5% auto;
+}
+
+.au-founder-avatar {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70% !important;
+    animation: auAvatarShape 6s infinite alternate ease-in-out;
+    border: 5px solid #14B8A6;
+    object-fit: cover;
+}
+
+@keyframes auAvatarShape {
     0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
     100% { border-radius: 50%; }
 }
 
-.founder-quote-text { font-size: 1.6rem; font-style: italic; color: #eee; margin: 30px 0 !important; border-left: 5px solid #00f2ff; padding-left: 20px; }
-
-/* Impact */
-.neon-impact-box { background: #111; border: 1px solid #333; padding: 50px; border-radius: 30px; }
-.rocket-motion { font-size: 8rem !important; color: #00f2ff; animation: rocket 3s infinite ease-in-out; }
-
-@keyframes rocket {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+.au-founder-tag {
+    text-transform: uppercase;
+    color: #6366F1;
+    font-weight: 800;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
 }
 
-/* Media Queries for full responsiveness */
-@media (max-width: 900px) {
-    .modern-hero { text-align: center; }
-    .hero-sub-text { margin: 30px auto !important; }
-    .point-row { flex-direction: column; text-align: left; }
+.au-founder-title {
+    font-weight: 800 !important;
+    color: #1a1a1a;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    margin-bottom: 20px !important;
+    line-height: 1.2;
 }
 
-@media (max-width: 600px) {
-    .hero-main-title { font-size: 2.5rem !important; }
-    .point-row:hover { transform: none; }
+.au-founder-quote {
+    font-size: 1.4rem;
+    font-style: italic;
+    color: #2d2d2d;
+    margin: 30px 0 !important;
+    border-left: 5px solid #14B8A6;
+    padding-left: 5%;
+    line-height: 1.8;
+}
+
+.au-founder-name {
+    font-weight: 800 !important;
+    color: #1a1a1a;
+    font-size: 1.3rem;
+    margin-top: 25px !important;
+}
+
+.au-founder-role {
+    color: #6366F1;
+    font-weight: 600;
+    font-size: 0.95rem !important;
+}
+
+/* Responsive Media Queries - Percentage Based */
+
+/* Large Desktop (1200px+) - 100% width */
+@media (min-width: 75%) {
+    .au-hero-section { padding: 8% 8%; }
+    .au-values-section { padding: 12% 8%; }
+    .au-founder-section { padding: 12% 8%; }
+}
+
+/* Tablet (600px - 900px) - 75% width */
+@media (max-width: 75%) {
+    .au-hero-section {
+        text-align: center;
+        padding: 8% 5%;
+    }
+    
+    .au-hero-subtitle {
+        margin: 20px auto !important;
+    }
+    
+    .au-values-title {
+        margin-bottom: 10% !important;
+    }
+    
+    .au-values-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .au-values-icon-box {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+/* Mobile (max 600px) - 48% width */
+@media (max-width: 48%) {
+    .au-hero-section {
+        padding: 12% 5%;
+        min-height: 60%;
+    }
+    
+    .au-hero-main-title {
+        font-size: 2.2rem !important;
+    }
+    
+    .au-hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .au-hero-button {
+        width: 100%;
+        padding: 12px 30px !important;
+    }
+    
+    .au-values-section {
+        padding: 12% 5%;
+    }
+    
+    .au-values-title {
+        font-size: 1.8rem;
+        margin-bottom: 12% !important;
+    }
+    
+    .au-values-cards-container {
+        gap: 4%;
+    }
+    
+    .au-values-card {
+        padding: 5%;
+    }
+    
+    .au-values-card:hover {
+        transform: none;
+    }
+    
+    .au-founder-section {
+        padding: 12% 5%;
+    }
+    
+    .au-founder-avatar-container {
+        max-width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+    }
+    
+    .au-founder-title {
+        font-size: 1.6rem;
+    }
+    
+    .au-founder-quote {
+        font-size: 1.1rem;
+        padding-left: 4%;
+    }
 }

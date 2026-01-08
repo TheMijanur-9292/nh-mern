@@ -22,9 +22,9 @@ const Stats = () => {
             justifyContent="space-around"
             alignItems="center"
           >
-            <StatItem number="1,200+" label="Active Helpers" color="#667eea" />
-            <StatItem number="5,400+" label="Lives Impacted" color="#764ba2" />
-            <StatItem number="25+" label="Cities Covered" color="#ff6b6b" />
+            <StatItem number="1,200+" label="Active Helpers" color="#6366F1" />
+            <StatItem number="5,400+" label="Lives Impacted" color="#14B8A6" />
+            <StatItem number="25+" label="Cities Covered" color="#6366F1" />
           </Stack>
         </Paper>
       </motion.div>

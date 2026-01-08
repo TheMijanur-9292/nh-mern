@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Container, Typography, Stack, Paper, Divider, IconButton } from '@mui/material';
 import { motion } from 'framer-motion';
 import { Security, Lock, VisibilityOff, GppGood, ArrowBack } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 const PrivacyPolicy = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const navigate = useNavigate();
 
   const sections = [

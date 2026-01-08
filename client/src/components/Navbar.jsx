@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { 
   AppBar, Toolbar, Typography, Button, IconButton, 
-  Box, Avatar, Menu, MenuItem, Badge, Divider, Tooltip, Stack, useMediaQuery, useTheme 
+  Box, Avatar, Menu, MenuItem, Badge, Divider, Tooltip, Stack, useMediaQuery, useTheme,
+  Drawer, List, ListItem, ListItemIcon, ListItemText
 } from '@mui/material';
 import { 
   Menu as MenuIcon, 
@@ -10,7 +11,16 @@ import {
   Chat as ChatIcon, 
   Logout, 
   Person,
-  Home as HomeIcon
+  Home as HomeIcon,
+  Info as InfoIcon,
+  Shield as ShieldIcon,
+  Phone as PhoneIcon,
+  AppRegistration as SignUpIcon,
+  Login as SignInIcon,
+  Policy as PolicyIcon,
+  Gavel as TermsIcon,
+  Close as CloseIcon,
+  FavoriteBorder as StoriesIcon
 } from '@mui/icons-material';
 
 // CSS ফাইল ইমপোর্ট
@@ -19,6 +29,7 @@ import './Navbar.css';
 const Navbar = () => {
   const [user, setUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
@@ -59,6 +70,9 @@ const Navbar = () => {
 
   const handleProfileMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleProfileMenuClose = () => setAnchorEl(null);
+
+  const handleMobileDrawerOpen = () => setMobileDrawerOpen(true);
+  const handleMobileDrawerClose = () => setMobileDrawerOpen(false);
 
   const handleLogout = () => {
     localStorage.removeItem('user');
@@ -156,17 +170,171 @@ const Navbar = () => {
                 </Badge>
               </IconButton>
             )}
-            <IconButton onClick={handleProfileMenuOpen}>
-              {user ? (
-                <Avatar sx={{ width: 32, height: 32, bgcolor: '#764ba2' }}>
-                  {user.name?.charAt(0).toUpperCase() || 'U'}
-                </Avatar>
-              ) : (
-                <MenuIcon sx={{ color: '#764ba2' }} />
-              )}
+            <IconButton onClick={handleMobileDrawerOpen}>
+              <MenuIcon sx={{ color: '#764ba2' }} />
             </IconButton>
           </Stack>
         )}
+
+        {/* Mobile Drawer */}
+        <Drawer
+          anchor="left"
+          open={mobileDrawerOpen}
+          onClose={handleMobileDrawerClose}
+          PaperProps={{ className: 'mobile-drawer-paper' }}
+        >
+          <Box className="mobile-drawer-container">
+            <Box className="drawer-header">
+              <Box>
+                <Typography variant="h6" className="drawer-brand">NeighborHelp</Typography>
+                <Typography variant="caption" className="drawer-menu-label">Menu</Typography>
+              </Box>
+              <IconButton 
+                onClick={handleMobileDrawerClose}
+                className="drawer-close-btn"
+              >
+                <CloseIcon />
+              </IconButton>
+            </Box>
+
+            <Divider className="drawer-divider" />
+
+            {/* Main Navigation Links */}
+            <List className="drawer-main-list">
+              <ListItem 
+                button 
+                component={Link} 
+                to="/"
+                onClick={handleMobileDrawerClose}
+                className={`drawer-item ${isActive('/') ? 'drawer-item-active' : ''}`}
+              >
+                <ListItemIcon className="drawer-icon"><HomeIcon /></ListItemIcon>
+                <ListItemText primary="Home" />
+              </ListItem>
+
+              <ListItem 
+                button 
+                component={Link} 
+                to="/about"
+                onClick={handleMobileDrawerClose}
+                className={`drawer-item ${isActive('/about') ? 'drawer-item-active' : ''}`}
+              >
+                <ListItemIcon className="drawer-icon"><InfoIcon /></ListItemIcon>
+                <ListItemText primary="About Us" />
+              </ListItem>
+
+              <ListItem 
+                button 
+                component={Link} 
+                to="/map"
+                onClick={handleMobileDrawerClose}
+                className={`drawer-item ${isActive('/map') ? 'drawer-item-active' : ''}`}
+              >
+                <ListItemIcon className="drawer-icon"><MapIcon /></ListItemIcon>
+                <ListItemText primary="Find Help" />
+              </ListItem>
+
+              <ListItem 
+                button 
+                component={Link} 
+                to="/success-stories"
+                onClick={handleMobileDrawerClose}
+                className={`drawer-item ${isActive('/success-stories') ? 'drawer-item-active' : ''}`}
+              >
+                <ListItemIcon className="drawer-icon"><StoriesIcon /></ListItemIcon>
+                <ListItemText primary="Success Stories" />
+              </ListItem>
+
+              <ListItem 
+                button 
+                component={Link} 
+                to="/safety-guide"
+                onClick={handleMobileDrawerClose}
+                className={`drawer-item ${isActive('/safety-guide') ? 'drawer-item-active' : ''}`}
+              >
+                <ListItemIcon className="drawer-icon"><ShieldIcon /></ListItemIcon>
+                <ListItemText primary="Safety Guide" />
+              </ListItem>
+
+              <ListItem 
+                button 
+                component={Link} 
+                to="/contact"
+                onClick={handleMobileDrawerClose}
+                className={`drawer-item ${isActive('/contact') ? 'drawer-item-active' : ''}`}
+              >
+                <ListItemIcon className="drawer-icon"><PhoneIcon /></ListItemIcon>
+                <ListItemText primary="Contact Us" />
+              </ListItem>
+
+              {!user && (
+                <>
+                  <Divider className="drawer-divider" />
+                  <Box className="drawer-auth-buttons">
+                    <Button 
+                      component={Link} 
+                      to="/signin"
+                      onClick={handleMobileDrawerClose}
+                      fullWidth
+                      className="drawer-signin-btn"
+                    >
+                      Sign In
+                    </Button>
+                    <Button 
+                      component={Link} 
+                      to="/signup"
+                      onClick={handleMobileDrawerClose}
+                      fullWidth
+                      className="drawer-signup-btn"
+                    >
+                      Sign Up
+                    </Button>
+                  </Box>
+                </>
+              )}
+
+              {user && (
+                <>
+                  <ListItem 
+                    button 
+                    component={Link} 
+                    to="/profile"
+                    onClick={handleMobileDrawerClose}
+                    className="drawer-item"
+                  >
+                    <ListItemIcon className="drawer-icon"><Person /></ListItemIcon>
+                    <ListItemText primary="Profile" />
+                  </ListItem>
+
+                  <ListItem 
+                    button 
+                    onClick={() => {
+                      handleLogout();
+                      handleMobileDrawerClose();
+                    }}
+                    className="drawer-item drawer-logout"
+                  >
+                    <ListItemIcon className="drawer-icon"><Logout /></ListItemIcon>
+                    <ListItemText primary="Logout" />
+                  </ListItem>
+                </>
+              )}
+            </List>
+
+            {/* Footer Links */}
+            <Box className="drawer-footer">
+              <Box className="drawer-footer-content">
+                <Link to="/privacy-policy" onClick={handleMobileDrawerClose} className="footer-link">
+                  Privacy Policy
+                </Link>
+                <span className="footer-divider">•</span>
+                <Link to="/terms" onClick={handleMobileDrawerClose} className="footer-link">
+                  Terms of Use
+                </Link>
+              </Box>
+            </Box>
+          </Box>
+        </Drawer>
 
         <Menu
           anchorEl={anchorEl}

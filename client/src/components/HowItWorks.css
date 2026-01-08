@@ -13,7 +13,7 @@
 
 .hiw-main-title {
   font-weight: 800 !important;
-  color: #1a1a1a;
+  color: #1f2937;
   letter-spacing: -1px;
   margin-bottom: 10px !important;
 }
@@ -21,7 +21,7 @@
 .hiw-title-line {
   width: 60px;
   height: 4px;
-  background: #1e90ff; /* Primary color */
+  background: linear-gradient(90deg, #6366F1 0%, #14B8A6 100%);
   margin: 0 auto;
   border-radius: 2px;
 }
@@ -39,24 +39,31 @@
   flex: 1;
   text-align: center;
   padding: 30px 20px;
-  background: #ffffff;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(20, 184, 166, 0.05) 100%);
   border-radius: 20px;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
   position: relative;
+  border: 1px solid rgba(99, 102, 241, 0.1);
+}
+
+.hiw-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(99, 102, 241, 0.15);
+  border-color: rgba(99, 102, 241, 0.2);
 }
 
 .hiw-icon-wrapper {
   width: 80px;
   height: 80px;
-  background: #f8faff;
+  background: linear-gradient(135deg, #6366F1 0%, #14B8A6 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 25px;
-  color: #1e90ff;
+  color: white;
   position: relative;
-  border: 1px solid #eef2ff;
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.25);
 }
 
 .hiw-icon-wrapper svg {
@@ -69,7 +76,7 @@
   right: 0;
   width: 28px;
   height: 28px;
-  background: #1a1a1a;
+  background: #6366F1;
   color: white;
   border-radius: 50%;
   font-size: 14px;
@@ -77,16 +84,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
 .hiw-step-title {
   font-weight: 700 !important;
-  color: #1a1a1a;
+  color: #1f2937;
   margin-bottom: 12px !important;
 }
 
 .hiw-step-desc {
-  color: #666;
+  color: #6b7280;
   line-height: 1.6 !important;
   max-width: 250px;
   margin: 0 auto !important;
@@ -98,7 +106,7 @@
   align-items: center;
   justify-content: center;
   padding-top: 50px;
-  color: #cbd5e1;
+  color: rgba(99, 102, 241, 0.3);
 }
 
 .connector-arrow-mobile {

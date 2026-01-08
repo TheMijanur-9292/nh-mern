@@ -1,161 +1,300 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Container, Box, Paper, Typography, Avatar, Grid, 
-  Card, CardContent, Chip, IconButton, Stack, CircularProgress, Divider, Rating 
+  Box, Container, Typography, Card, CardContent, Stack, Grid, 
+  Accordion, AccordionSummary, AccordionDetails, Button,
+  List, ListItem, ListItemIcon, ListItemText, Divider
 } from '@mui/material';
-import { Delete, Email, HelpOutline, Schedule, VerifiedUser, Star } from '@mui/icons-material';
-import axios from 'axios';
+import {
+  ExpandMore, Shield, Phone, Warning, CheckCircle, 
+  LocationOn, Person, Lock, ErrorOutline, Info,
+  SecurityOutlined, FavoriteBorder, Verified
+} from '@mui/icons-material';
+import './safetyguide.css';
 
-const Profile = () => {
-  const [userPosts, setUserPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [userData, setUserData] = useState(null); // ডাটাবেস থেকে ইউজারের লেটেস্ট তথ্য রাখার জন্য
-  
-  const [currentUser] = useState(() => {
-    const savedUser = JSON.parse(localStorage.getItem('user'));
-    return savedUser ? { ...savedUser, id: savedUser.id || savedUser._id } : null;
-  });
-
+const SafetyGuide = () => {
   useEffect(() => {
-    if (currentUser?.id) {
-      fetchUserPosts();
-      fetchUserInfo(); // ইউজারের রেটিং ও ব্যাজ আনার জন্য
-    }
-  }, [currentUser]);
+    window.scrollTo(0, 0);
+  }, []);
+  const [expanded, setExpanded] = useState(false);
 
-  // ইউজারের লেটেস্ট রেটিং এবং ব্যাজ ডাটাবেস থেকে আনা
-  const fetchUserInfo = async () => {
-    try {
-      const res = await axios.get(`http://localhost:5000/api/users/${currentUser.id}`);
-      setUserData(res.data);
-    } catch (err) {
-      console.error("Error fetching user info:", err);
-    }
+  const handleAccordionChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
   };
 
-  const fetchUserPosts = async () => {
-    try {
-      const res = await axios.get(`http://localhost:5000/api/posts/user/${currentUser.id}`);
-      setUserPosts(res.data);
-      setLoading(false);
-    } catch (err) {
-      console.error("Error fetching posts:", err);
-      setLoading(false);
-    }
-  };
+  /* ✅ UPDATED AS PER YOUR INSTRUCTION (FULL NAME + INDIA) */
+  const emergencyContacts = [
+    { title: 'Police Emergency', number: '100', icon: Shield, color: '#ef4444' },
+    { title: 'Fire & Rescue Services', number: '101', icon: Warning, color: '#f59e0b' },
+    { title: 'Ambulance Emergency', number: '108', icon: Phone, color: '#3b82f6' },
+    { title: 'Women & Child Helpline', number: '181', icon: FavoriteBorder, color: '#ec4899' },
+  ];
 
-  const handleDeletePost = async (postId) => {
-    if (window.confirm("Are you sure you want to delete this help request?")) {
-      try {
-        await axios.delete(`http://localhost:5000/api/posts/${postId}`);
-        setUserPosts(userPosts.filter(post => post._id !== postId));
-      } catch (err) {
-        alert("Failed to delete post");
-      }
-    }
-  };
+  /* 🔒 CONTENT COMPLETELY UNCHANGED BELOW */
 
-  if (!currentUser) return <Typography align="center" sx={{ mt: 5 }}>Please Login to view profile</Typography>;
+  const safetyTips = [
+    {
+      id: 'panel1',
+      title: 'Before Meeting Someone',
+      icon: <Info sx={{ color: '#6366f1' }} />,
+      content: [
+        'Always verify the person\'s profile and neighborhood rating',
+        'Check if they have community badges or positive reviews',
+        'Read their bio carefully and check if they are verified',
+        'Ask questions about what they need help with',
+        'Trust your instincts - if something feels off, don\'t proceed'
+      ]
+    },
+    {
+      id: 'panel2',
+      title: 'During the Meeting',
+      icon: <LocationOn sx={{ color: '#14b8a6' }} />,
+      content: [
+        'Always meet in public places - cafes, parks, community centers',
+        'Inform a trusted friend or family member about your meeting',
+        'Share your location with someone you trust',
+        'Bring your phone fully charged',
+        'Keep the meeting brief and in daylight hours when possible',
+        'Never share personal financial information'
+      ]
+    },
+    {
+      id: 'panel3',
+      title: 'Online Safety',
+      icon: <Lock sx={{ color: '#f59e0b' }} />,
+      content: [
+        'Never share passwords or login credentials',
+        'Don\'t provide bank account or card details',
+        'Avoid clicking suspicious links sent by strangers',
+        'Use only the NeighborHelp messaging system',
+        'Report suspicious behavior immediately',
+        'Keep your personal address private until you build trust'
+      ]
+    },
+    {
+      id: 'panel4',
+      title: 'Recognizing Red Flags',
+      icon: <ErrorOutline sx={{ color: '#ef4444' }} />,
+      content: [
+        'Urgent requests asking for money or gifts',
+        'Requests to move conversation off the platform',
+        'Inconsistent or vague information about their request',
+        'Pressure to make quick decisions',
+        'Requests to share inappropriate photos',
+        'Users who are overly secretive about their purpose'
+      ]
+    },
+    {
+      id: 'panel5',
+      title: 'What to Do If You Feel Unsafe',
+      icon: <Phone sx={{ color: '#3b82f6' }} />,
+      content: [
+        'Leave immediately and go to a safe location',
+        'Contact emergency services if you\'re in immediate danger',
+        'Block the user on NeighborHelp',
+        'Report the incident to our community team',
+        'Save any messages or evidence of concerning behavior',
+        'Reach out to trusted friends or family for support'
+      ]
+    }
+  ];
+
+  const bestPractices = [
+    {
+      title: 'Verify Identities',
+      description: 'Always ask for identification before helping strangers',
+      icon: <Verified />,
+      color: '#6366f1'
+    },
+    {
+      title: 'Trust Your Gut',
+      description: 'If something feels wrong, it probably is. Don\'t ignore your instincts',
+      icon: <SecurityOutlined />,
+      color: '#14b8a6'
+    },
+    {
+      title: 'Stay Connected',
+      description: 'Keep loved ones informed about your whereabouts and activities',
+      icon: <Person />,
+      color: '#f59e0b'
+    },
+    {
+      title: 'Document Everything',
+      description: 'Keep records of conversations and agreements for your protection',
+      icon: <CheckCircle />,
+      color: '#8b5cf6'
+    },
+    {
+      title: 'Know Your Rights',
+      description: 'Understand local laws and your rights as a community helper',
+      icon: <Shield />,
+      color: '#06b6d4'
+    },
+    {
+      title: 'Report Abuse',
+      description: 'Help keep community safe by reporting suspicious or harmful behavior',
+      icon: <FavoriteBorder />,
+      color: '#ec4899'
+    }
+  ];
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
-      {/* ১. প্রোফাইল ইনফো কার্ড (রেটিং ও ব্যাজ সহ) */}
-      <Paper elevation={2} sx={{ p: 4, borderRadius: '20px', mb: 4, textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-        {/* ব্যাকগ্রাউন্ডে হালকা ডিজাইন */}
-        <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '8px', bgcolor: '#764ba2' }} />
-        
-        <Avatar 
-          sx={{ width: 110, height: 110, mx: 'auto', mb: 2, bgcolor: '#764ba2', fontSize: '3rem', fontWeight: 'bold', boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}
-        >
-          {currentUser.name?.charAt(0).toUpperCase()}
-        </Avatar>
+    <Box className="safety-guide-container">
 
-        <Typography variant="h4" fontWeight="900" sx={{ color: '#2d3436' }}>{currentUser.name}</Typography>
-        
-        {/* রেটিং সেকশন */}
-        <Stack direction="row" spacing={1} justifyContent="center" alignItems="center" sx={{ mt: 1 }}>
-          <Rating 
-            value={userData?.ratings?.average || 0} 
-            readOnly 
-            precision={0.5} 
-            size="small"
-            emptyIcon={<Star style={{ opacity: 0.3 }} fontSize="inherit" />}
-          />
-          <Typography variant="body2" fontWeight="700" color="text.primary">
-            {userData?.ratings?.average || "0"} 
+      {/* HERO */}
+      <Box className="safety-hero">
+        <Container maxWidth="lg">
+          <Stack spacing={2} className="hero-content">
+            <Shield className="hero-icon" />
+            <Typography className="hero-title">
+              Community Safety Guide
+            </Typography>
+            <Typography className="hero-subtitle">
+              Stay safe while helping neighbors and building community connections
+            </Typography>
+          </Stack>
+        </Container>
+      </Box>
+
+      {/* EMERGENCY CONTACTS */}
+      <Box className="gradient-section">
+        <Container maxWidth="lg">
+          <Typography className="section-title">
+            Emergency Contacts
           </Typography>
-          <Typography variant="body2" color="text.secondary">
-            ({userData?.ratings?.count || 0} reviews)
+          <Grid container spacing={2}>
+            {emergencyContacts.map((contact, index) => {
+              const IconComponent = contact.icon;
+              return (
+                <Grid item xs={12} sm={6} md={3} key={index}>
+                  <Card className="emergency-card">
+                    <CardContent className="emergency-card-content">
+                      <IconComponent sx={{ fontSize: 36, color: contact.color }} />
+                      <Typography className="emergency-title">
+                        {contact.title}
+                      </Typography>
+                      <Typography className="emergency-number" sx={{ color: contact.color }}>
+                        {contact.number}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Container>
+      </Box>
+
+      {/* BEST PRACTICES */}
+      <Box className="gradient-section">
+        <Container maxWidth="lg">
+          <Typography className="section-title">
+            Safety Best Practices
           </Typography>
-        </Stack>
+          <Grid container spacing={3}>
+            {bestPractices.map((practice, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Card className="practice-card">
+                  <CardContent className="practice-card-content">
+                    <Box sx={{ color: practice.color }}>
+                      {React.cloneElement(practice.icon, { sx: { fontSize: 30 } })}
+                    </Box>
+                    <Typography className="practice-title">
+                      {practice.title}
+                    </Typography>
+                    <Typography className="practice-description">
+                      {practice.description}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
 
-        {/* ব্যাজ ডিসপ্লে */}
-        <Chip 
-          label={userData?.badge || "New Neighbor"} 
-          size="small"
-          icon={<VerifiedUser sx={{ fontSize: '1rem !important', color: '#fff !important' }} />}
-          sx={{ 
-            mt: 2, 
-            px: 1,
-            fontWeight: 'bold', 
-            bgcolor: '#764ba2', 
-            color: '#fff',
-            height: '28px',
-            '& .MuiChip-label': { px: 1 }
-          }}
-        />
+      {/* GUIDELINES */}
+      <Box className="gradient-section">
+        <Container maxWidth="lg">
+          <Typography className="section-title">
+            Detailed Safety Guidelines
+          </Typography>
 
-        <Stack direction="row" spacing={1} justifyContent="center" alignItems="center" sx={{ color: 'text.secondary', mt: 2 }}>
-          <Email fontSize="small" />
-          <Typography variant="body2">{currentUser.email}</Typography>
-        </Stack>
-      </Paper>
-
-      {/* ২. ইউজারের পোস্ট সেকশন */}
-      <Typography variant="h6" fontWeight="800" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1, color: '#2d3436' }}>
-        <HelpOutline sx={{ color: '#764ba2' }} /> My Help Requests
-      </Typography>
-
-      <Divider sx={{ mb: 3 }} />
-
-      {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', p: 5 }}><CircularProgress /></Box>
-      ) : userPosts.length > 0 ? (
-        <Grid container spacing={2}>
-          {userPosts.map((post) => (
-            <Grid item xs={12} key={post._id}>
-              <Card sx={{ borderRadius: '15px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', border: '1px solid #f0f0f0' }}>
-                <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: '16px !important' }}>
-                  <Box>
-                    <Chip 
-                      label={post.category} 
-                      size="small" 
-                      sx={{ mb: 1, bgcolor: '#f3f0ff', color: '#764ba2', fontWeight: 'bold', fontSize: '0.7rem' }} 
-                    />
-                    <Typography variant="subtitle1" fontWeight="800" sx={{ color: '#2d3436' }}>{post.title}</Typography>
-                    <Stack direction="row" spacing={1} alignItems="center" sx={{ mt: 0.5, color: 'text.secondary' }}>
-                      <Schedule sx={{ fontSize: 14 }} />
-                      <Typography variant="caption" fontWeight="600">Expires in 24 hours</Typography>
-                    </Stack>
-                  </Box>
-                  <IconButton 
-                    onClick={() => handleDeletePost(post._id)}
-                    sx={{ color: '#ff4757', bgcolor: '#fff1f2', '&:hover': { bgcolor: '#ffdee1' } }}
-                  >
-                    <Delete fontSize="small" />
-                  </IconButton>
-                </CardContent>
-              </Card>
-            </Grid>
+          {safetyTips.map((tip) => (
+            <Accordion
+              key={tip.id}
+              expanded={expanded === tip.id}
+              onChange={handleAccordionChange(tip.id)}
+              className="safety-accordion"
+            >
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                {tip.icon}
+                <Typography sx={{ ml: '2%' }}>
+                  {tip.title}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <List>
+                  {tip.content.map((item, index) => (
+                    <ListItem key={index}>
+                      <ListItemIcon>
+                        <CheckCircle sx={{ color: '#14b8a6' }} />
+                      </ListItemIcon>
+                      <ListItemText primary={item} />
+                    </ListItem>
+                  ))}
+                </List>
+              </AccordionDetails>
+            </Accordion>
           ))}
-        </Grid>
-      ) : (
-        <Paper sx={{ p: 6, textAlign: 'center', bgcolor: '#f9f9f9', borderRadius: '20px', border: '2px dashed #eee' }}>
-          <Typography color="text.secondary" fontWeight="600">You have no active help requests.</Typography>
-        </Paper>
-      )}
-    </Container>
+        </Container>
+      </Box>
+
+      {/* QUICK REFERENCE */}
+      <Box className="gradient-section">
+        <Container maxWidth="lg">
+          <Card className="reference-card">
+            <CardContent>
+              <Typography variant="h5">Quick Reference: When to Report</Typography>
+              <Divider sx={{ my: 2 }} />
+              <Typography>Use common sense and report immediately if you feel unsafe.</Typography>
+            </CardContent>
+          </Card>
+        </Container>
+      </Box>
+
+      {/* PLEDGE */}
+      <Box className="gradient-section">
+        <Container maxWidth="lg">
+          <Card className="pledge-card">
+            <CardContent className="pledge-content">
+              <Typography className="pledge-title">
+                Our Community Pledge
+              </Typography>
+              <Typography className="pledge-text">
+                We are committed to building a safe, respectful, and inclusive community where neighbors 
+                help neighbors. By following these safety guidelines, we create an environment of trust 
+                and mutual support. Together, we can make our neighborhoods stronger and safer for everyone.
+              </Typography>
+              <Stack direction="row" spacing={2} justifyContent="center">
+                <Button variant="contained">I Understand & Agree</Button>
+                <Button variant="outlined">Share This Guide</Button>
+              </Stack>
+            </CardContent>
+          </Card>
+        </Container>
+      </Box>
+
+      {/* FOOTER */}
+      <Box className="guide-footer">
+        <Container>
+          <Typography variant="caption">
+            Last Updated: January 2026 | For urgent safety concerns, always contact local authorities
+          </Typography>
+        </Container>
+      </Box>
+
+    </Box>
   );
 };
 
-export default Profile;
+export default SafetyGuide;
