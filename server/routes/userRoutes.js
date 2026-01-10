@@ -19,6 +19,9 @@ router.post('/signin', userController.signin);
 router.post('/rate', userController.rateUser);
 router.get('/:id', userController.getUserById);
 router.get('/all', userController.getAllUsers);
+router.post('/subscribe', userController.subscribe);
+// একদম শেষে module.exports এর আগে বা অন্যান্য রাউটের সাথে
+router.get('/all', userController.getAllUsers);
 
 module.exports = router;
 

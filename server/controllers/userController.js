@@ -122,3 +122,44 @@ exports.getAllUsers = async (req, res) => {
     res.status(500).json({ message: "Error fetching users" });
   }
 };
+
+//Notification সাবস্ক্রিপশন সংরক্ষণের জন্য নতুন কন্ট্রোলার ফাংশন
+exports.subscribe = async (req, res) => {
+  const { subscription, userId } = req.body;
+  
+  if (!userId || !subscription) {
+    return res.status(400).json({ error: "User ID and subscription are required" });
+  }
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      userId, 
+      { pushSubscription: subscription },
+      { new: true }
+    );
+    
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    console.log(`✅ Subscription saved for user: ${user.name}`);
+    res.status(200).json({ success: true, message: 'Subscribed successfully!' });
+  } catch (error) {
+    console.error("❌ Subscribe Error:", error.message);
+    res.status(500).json({ error: 'Failed to subscribe' });
+  }
+};
+
+// server/controllers/userController.js
+
+// সব ইউজারদের তালিকা আনার জন্য (UserSlider এর জন্য)
+exports.getAllUsers = async (req, res) => {
+  try {
+    // পাসওয়ার্ড বাদে সব ইউজার সিলেক্ট করা
+    const users = await User.find().select('-password');
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ message: "Error fetching users" });
+  }
+};

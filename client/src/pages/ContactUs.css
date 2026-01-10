@@ -1,302 +1,207 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap');
-
-/* White Theme - ContactUs Page */
-.cu-root-container {
-    background-color: #ffffff;
-    min-height: 100vh;
-    color: #1a1a1a;
-    overflow-x: hidden;
-    font-family: 'Inter', sans-serif;
+/* পুরো পেজের কন্টেইনার */
+.contact-wrapper {
+  padding: 4rem 2rem;
+  background-color: #f8f9fa;
+  font-family: 'Inter', sans-serif;
 }
 
-.cu-main-wrapper {
-    padding-top: 5%;
-    padding-bottom: 8%;
+/* --- Header Section --- */
+.contact-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 3rem auto;
 }
 
-/* Header Section */
-.cu-header-wrapper {
-    text-align: center;
-    margin-bottom: 8%;
+.contact-header h4 {
+  color: #667eea;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
 }
 
-.cu-header-tag {
-    color: #6366F1;
-    font-weight: 800 !important;
-    letter-spacing: 3px;
-    font-size: 0.75rem;
-    text-transform: uppercase;
+.contact-header h1 {
+  color: #2d3748;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
 }
 
-.cu-header-title {
-    font-weight: 900 !important;
-    font-size: clamp(2rem, 6vw, 3.5rem) !important;
-    color: #1a1a1a;
-    margin: 15px 0 !important;
-    line-height: 1.1;
+.contact-header p {
+  color: #718096;
+  font-size: 1.1rem;
+  line-height: 1.6;
 }
 
-.cu-header-gradient-text {
-    background: linear-gradient(135deg, #6366F1 0%, #14B8A6 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+/* --- Main Layout Grid --- */
+.contact-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: flex-start;
 }
 
-.cu-header-description {
-    max-width: 750px;
-    margin: 0 auto !important;
-    color: #555;
-    font-size: 1.05rem;
-    line-height: 1.7;
+/* Left Side: Info Boxes */
+.contact-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 300px;
 }
 
-/* Form Section */
-.cu-form-wrapper {
-    margin-bottom: 8%;
+.info-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  transition: transform 0.3s ease;
 }
 
-.cu-form-card {
-    background: #f8f9fa !important;
-    padding: 6% !important;
-    border-radius: 15px !important;
-    border: 1px solid #e5e7eb !important;
+.info-box:hover {
+  transform: translateY(-5px);
 }
 
-.cu-form-title {
-    font-weight: 800 !important;
-    color: #1a1a1a;
-    margin-bottom: 15px !important;
-    font-size: 1.5rem;
+.icon-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
 }
 
-.cu-form-subtitle {
-    color: #666;
-    margin-bottom: 5% !important;
-    font-size: 0.95rem;
+.info-text h3 {
+  color: #2d3748;
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
 }
 
-/* Input Fields */
-.cu-input-field .MuiFilledInput-root {
-    background-color: #ffffff !important;
-    color: #1a1a1a !important;
-    border-radius: 10px !important;
-    border-bottom: 2px solid #e5e7eb !important;
+.info-text p {
+  color: #4a5568;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
 }
 
-.cu-input-field .MuiFilledInput-root:hover {
-    background-color: #ffffff !important;
-    border-bottom-color: #6366F1 !important;
+.info-text span {
+  color: #718096;
+  font-size: 0.9rem;
 }
 
-.cu-input-field .Mui-focused .MuiFilledInput-root {
-    border-bottom-color: #6366F1 !important;
+/* Right Side: Form */
+.contact-form-container {
+  flex: 1.5; /* ফর্মটি একটু চওড়া হবে */
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+  min-width: 300px;
 }
 
-.cu-input-field .MuiInputLabel-root {
-    color: #999 !important;
-    font-size: 0.95rem;
+.contact-form h2 {
+  color: #2d3748;
+  margin-bottom: 1.5rem;
 }
 
-.cu-input-field .Mui-focused .MuiInputLabel-root {
-    color: #6366F1 !important;
+.form-group {
+  margin-bottom: 1.5rem;
 }
 
-/* Submit Button */
-.cu-submit-button {
-    background: linear-gradient(135deg, #6366F1 0%, #14B8A6 100%) !important;
-    color: white !important;
-    padding: 15px 50px !important;
-    border-radius: 10px !important;
-    font-weight: 700 !important;
-    text-transform: none !important;
-    font-size: 1rem !important;
-    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2) !important;
-    transition: all 0.3s ease !important;
-    width: 100%;
+.form-group label {
+  display: block;
+  color: #4a5568;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
 }
 
-.cu-submit-button:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 12px 30px rgba(99, 102, 241, 0.3) !important;
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s;
+  background-color: #fdfdfd;
 }
 
-/* Info Section */
-.cu-info-grid-wrapper {
-    margin-bottom: 8%;
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.cu-info-card {
-    background: linear-gradient(135deg, #f8f9fa 0%, #f0f4ff 100%);
-    border: 1px solid #e5e7eb;
-    padding: 5%;
-    border-radius: 12px;
-    text-align: center;
-    height: 100%;
-    transition: all 0.3s ease;
+.submit-btn {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.3s;
 }
 
-.cu-info-card:hover {
-    box-shadow: 0 12px 30px rgba(99, 102, 241, 0.1);
-    transform: translateY(-5px);
+.submit-btn:hover {
+  opacity: 0.9;
 }
 
-.cu-info-icon-box {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-    font-size: 1.8rem;
+/* --- Social Media Section --- */
+.social-media-section {
+  text-align: center;
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e2e8f0;
 }
 
-.cu-icon-red { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
-.cu-icon-blue { background: rgba(99, 102, 241, 0.1); color: #6366F1; }
-.cu-icon-green { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-
-.cu-info-title {
-    font-weight: 800 !important;
-    color: #1a1a1a;
-    margin-bottom: 10px !important;
-    font-size: 1.15rem;
+.social-media-section h3 {
+  color: #2d3748;
+  margin-bottom: 1.5rem;
 }
 
-.cu-info-value {
-    font-weight: 700 !important;
-    color: #333;
-    font-size: 1rem;
-    margin-bottom: 8px !important;
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
 }
 
-.cu-info-sub {
-    color: #888;
-    font-size: 0.85rem !important;
-    line-height: 1.5;
+.social-icon {
+  font-size: 1.8rem;
+  color: #718096;
+  transition: transform 0.3s, color 0.3s;
 }
 
-/* Social Section */
-.cu-social-wrapper {
-    text-align: center;
-    padding: 5% 0;
+.social-icon:hover {
+  transform: scale(1.2);
 }
 
-.cu-social-icon-btn {
-    color: #6366F1 !important;
-    background: #f0f4ff !important;
-    border: 1px solid #e5e7eb !important;
-    transition: all 0.3s ease !important;
-    margin: 0 8px !important;
-    width: 50px;
-    height: 50px;
-}
+/* Individual Brand Colors on Hover */
+.social-icon.facebook:hover { color: #1877F2; }
+.social-icon.twitter:hover { color: #1DA1F2; }
+.social-icon.instagram:hover { color: #E1306C; }
+.social-icon.linkedin:hover { color: #0A66C2; }
+.social-icon.youtube:hover { color: #FF0000; }
 
-.cu-social-icon-btn:hover {
-    background: #6366F1 !important;
-    color: #ffffff !important;
-    border-color: #6366F1 !important;
-    transform: scale(1.1);
-}
+/* --- Responsive Layout Logic (CRUCIAL) --- */
+@media (max-width: 900px) {
+  .contact-container {
+    /* Mobile-এ উল্টো দিক থেকে সাজাবে */
+    flex-direction: column-reverse; 
+    align-items: stretch;
+  }
 
-/* Responsive Media Queries - Percentage Based */
-
-/* Large Desktop (75%+) */
-@media (min-width: 75%) {
-    .cu-main-wrapper {
-        padding-top: 6%;
-        padding-bottom: 10%;
-    }
-    
-    .cu-header-wrapper {
-        margin-bottom: 10%;
-    }
-}
-
-/* Tablet (48% - 75%) */
-@media (max-width: 75%) {
-    .cu-header-title {
-        font-size: 2.5rem !important;
-    }
-    
-    .cu-header-description {
-        font-size: 0.95rem;
-    }
-    
-    .cu-form-card {
-        padding: 5% !important;
-    }
-    
-    .cu-info-card {
-        margin-bottom: 3%;
-    }
-}
-
-/* Mobile (max 48%) */
-@media (max-width: 48%) {
-    .cu-root-container {
-        padding-left: 0;
-        padding-right: 0;
-    }
-    
-    .cu-main-wrapper {
-        padding-top: 8%;
-        padding-bottom: 10%;
-        padding-left: 5%;
-        padding-right: 5%;
-    }
-    
-    .cu-header-tag {
-        font-size: 0.7rem;
-        letter-spacing: 2px;
-    }
-    
-    .cu-header-title {
-        font-size: 1.8rem !important;
-        margin: 12px 0 !important;
-    }
-    
-    .cu-header-description {
-        font-size: 0.9rem;
-        line-height: 1.6;
-    }
-    
-    .cu-form-wrapper {
-        margin-bottom: 10%;
-    }
-    
-    .cu-form-card {
-        padding: 6% !important;
-        border-radius: 12px !important;
-    }
-    
-    .cu-form-title {
-        font-size: 1.2rem;
-        margin-bottom: 12px !important;
-    }
-    
-    .cu-submit-button {
-        padding: 14px 30px !important;
-        font-size: 0.95rem !important;
-        width: 100%;
-    }
-    
-    .cu-info-grid-wrapper {
-        margin-bottom: 10%;
-    }
-    
-    .cu-info-card {
-        padding: 5%;
-        margin-bottom: 4%;
-    }
-    
-    .cu-info-card:hover {
-        transform: none;
-    }
-    
-    .cu-social-icon-btn {
-        margin: 5px 6px !important;
-        width: 45px;
-        height: 45px;
-    }
+  .contact-header h1 {
+    font-size: 2rem;
+  }
 }

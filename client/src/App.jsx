@@ -2,6 +2,9 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Box, CssBaseline } from '@mui/material'; 
 
+// ১. ScrollToTop ইমপোর্ট করা আছে
+import ScrollToTop from './components/ScrollToTop';
+
 // Existing Imports
 import Home from './pages/Home';
 import MapPage from './pages/MapPage';
@@ -17,6 +20,7 @@ import SafetyGuide from './pages/SafetyGuide';
 import SuccessStories from './pages/SuccessStories';
 import ContactUs from './pages/ContactUs';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfUse from './pages/TermsOfUse';
 
 // CSS Import
 import './App.css';
@@ -24,8 +28,12 @@ import './App.css';
 function App() {
   return (
     <BrowserRouter>
+      
       <CssBaseline /> 
       
+      {/* ২. ScrollToTop কম্পোনেন্টটি এখানে বসানো হলো */}
+      <ScrollToTop />
+
       {/* Container with className */}
       <div className="app-container">
         
@@ -34,6 +42,7 @@ function App() {
         {/* Main section with className */}
         <main className="main-content">
           <Routes>
+          
             {/* Core Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/map" element={<MapPage />} />
@@ -50,6 +59,7 @@ function App() {
             <Route path="/success-stories" element={<SuccessStories />} />
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<TermsOfUse />} />
           </Routes>
         </main>
         

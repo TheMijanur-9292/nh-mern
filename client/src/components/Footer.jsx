@@ -94,8 +94,8 @@ const Footer = () => {
               {[
                 { name: 'About Us', path: '/about' },
                 { name: 'Contact Us', path: '/contact' },
-                { name: 'Privacy Policy', path: '/privacy' },
-                { name: 'Terms of Use', path: '#' }
+                { name: 'Privacy Policy', path: '/privacy-policy' },
+                { name: 'Terms of Use', path: '/terms' }
               ].map((link) => (
                 <MuiLink 
                   key={link.name}

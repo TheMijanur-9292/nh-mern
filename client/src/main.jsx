@@ -21,8 +21,6 @@ const theme = createTheme({
 });
 
 // নোটিফিকেশন সাবস্ক্রাইব ফাংশন
-// client/src/main.jsx এর registerAndSubscribe ফাংশনটি আপডেট করুন
-
 const registerAndSubscribe = async () => {
   try {
     const register = await navigator.serviceWorker.register('/sw.js', { scope: '/' });
@@ -34,26 +32,36 @@ const registerAndSubscribe = async () => {
         applicationServerKey: 'BCxbFO2wC1Y38wRq7zFiOki0KYtWzRlwNhhWy30GkOsMGLcmy1P3g89QJ0cKP2Uskr85WuHkztHdNi5Ao-SrGVE' 
       });
 
-      // লগইন করা ইউজারের আইডি সংগ্রহ করুন (আপনার প্রজেক্ট অনুযায়ী এটি বদলাতে পারে)
+      // লগইন করা ইউজারের আইডি সংগ্রহ করুন
       const userData = JSON.parse(localStorage.getItem('user')); 
-      const userId = userData?._id;
+      const userId = userData?._id || userData?.id;
+      // 👇👇👇 ডিবাগিং কোড এখানে শুরু 👇👇👇
+      console.log("🔍 DEBUG: LocalStorage Data:", userData);
+      console.log("🔍 DEBUG: Extracted User ID:", userId);
+      // 👆👆👆 ডিবাগিং কোড শেষ 👆👆👆
 
       if (userId) {
+        console.log("🚀 DEBUG: Sending subscription to backend..."); // এই লাইনটি আসছে কিনা দেখুন
+
         // ব্যাকএন্ডে সাবস্ক্রিপশন ডাটা পাঠানো
-        await fetch('http://localhost:5000/api/users/subscribe', {
+        const response = await fetch('http://localhost:5000/api/users/subscribe', {
           method: 'POST',
           body: JSON.stringify({ subscription, userId }),
           headers: { 'Content-Type': 'application/json' }
         });
-        console.log('Subscription saved to database');
+        
+        const data = await response.json();
+        console.log('✅ Backend Response:', data);
+      } else {
+        console.log("⚠️ DEBUG: No User ID found. Skipping subscription save.");
       }
     }
   } catch (error) {
-    console.error('Subscription error:', error);
+    console.error('❌ Subscription error:', error);
   }
 };
 
-// একটি RootWrapper তৈরি করা যাতে useEffect ব্যবহার করা যায়
+// একটি RootWrapper তৈরি করা যাতে useEffect ব্যবহার করা যায়
 const RootWrapper = () => {
   useEffect(() => {
     if ('serviceWorker' in navigator) {
