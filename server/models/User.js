@@ -36,6 +36,10 @@ const userSchema = new mongoose.Schema({
   bio: {
     type: String,
     default: "Helping my community!"
+  },
+  pushSubscription: {
+    type: Object, // এটি পুরো JSON অবজেক্টটি সেভ করবে
+    default: null
   }
 }, { timestamps: true });
 

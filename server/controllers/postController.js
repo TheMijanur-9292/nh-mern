@@ -1,29 +1,30 @@
 const Post = require('../models/Post');
+const User = require('../models/User'); // User মডেল ইমপোর্ট
+const webpush = require('web-push');    // web-push লাইব্রেরি ইমপোর্ট
 
 // ১. নতুন হেল্প রিকোয়েস্ট তৈরি করা
 exports.createPost = async (req, res) => {
   try {
     const { userId, username, title, category, description, location, contact } = req.body;
 
-    // ডিবাগিং: সার্ভার টার্মিনালে চেক করুন ডাটা ঠিকমতো আসছে কি না
+    // ডিবাগিং
     console.log("📥 Received Post Data:", req.body);
 
     // ডাটা ভ্যালিডেশন
     if (!userId || !username || !title || !category || !location || !location.lat || !location.lng) {
-      console.log("⚠️ Validation Failed: Missing required fields");
-      return res.status(400).json({ 
-        message: "সবগুলো প্রয়োজনীয় ফিল্ড পূরণ করা হয়নি বা লোকেশন ডাটা ভুল।" 
+      return res.status(400).json({
+        message: "All required fields must be filled."
       });
     }
 
     const newPost = new Post({
       userId,
-      username: username || "Neighbor", // ডিফেন্সিভ চেক
+      username: username || "Neighbor",
       title,
       category,
       description: description || "No description provided",
       location: {
-        lat: Number(location.lat), // নিশ্চিত করছি এগুলো নাম্বার হিসেবে সেভ হচ্ছে
+        lat: Number(location.lat),
         lng: Number(location.lng)
       },
       contact: contact || "Chat only"
@@ -31,17 +32,50 @@ exports.createPost = async (req, res) => {
 
     const savedPost = await newPost.save();
     console.log("✅ Post saved successfully!");
+
+    // ============================================================
+    // ৩. নোটিফিকেশন লজিক (Notification Logic)
+    // ============================================================
+    try {
+      // ডেটাবেস থেকে সাবস্ক্রাইব করা ইউজারদের খুঁজুন
+      const users = await User.find({ pushSubscription: { $ne: null } });
+
+      // আপনার রিকুয়েন্টমেন্ট অনুযায়ী মেসেজ ফরম্যাট:
+      // Title: New Help Request
+      // Body: [Name] is asking for help about [Title]
+      const notificationPayload = JSON.stringify({
+        title: 'New Help Request',
+        body: `${username} is asking for help about ${title}`,
+        url: '/' //   `/post/${newPost._id}` // নোটিফিকেশনে ক্লিক করলে এই লিংকে যাবে এখানে ক্লিক করলে হোম পেজে যাবে যেখানে কার্ডটি আছে
+      });
+
+      // লুপ চালিয়ে নোটিফিকেশন পাঠানো
+      users.forEach(user => {
+        // ইউজার নিজেকে নোটিফিকেশন পাঠাবে না
+        if (user._id.toString() !== userId) {
+          webpush.sendNotification(user.pushSubscription, notificationPayload)
+            .catch(err => {
+              console.error(`Error sending notification to user ${user._id}:`, err);
+            });
+        }
+      });
+      
+    } catch (notifyErr) {
+      console.error("❌ Notification System Error:", notifyErr);
+    }
+    // ============================================================
+
     res.status(201).json(savedPost);
   } catch (err) {
     console.error("❌ Database Save Error:", err.message);
-    res.status(500).json({ 
-      message: "Failed to create post", 
-      error: err.message // এই এরর মেসেজটি ফ্রন্টএন্ড কনসোলে দেখতে পাবেন
+    res.status(500).json({
+      message: "Failed to create post",
+      error: err.message
     });
   }
 };
 
-// ২. সব পোস্ট ডাটা আনা (ম্যাপের জন্য)
+// ২. সব পোস্ট ডাটা আনা
 exports.getAllPosts = async (req, res) => {
   try {
     const posts = await Post.find().sort({ createdAt: -1 });
@@ -51,7 +85,7 @@ exports.getAllPosts = async (req, res) => {
   }
 };
 
-// ৩. নির্দিষ্ট ইউজারের পোস্টগুলো আনা (প্রোফাইলের জন্য)
+// ৩. নির্দিষ্ট ইউজারের পোস্টগুলো আনা
 exports.getPostsByUser = async (req, res) => {
   try {
     const posts = await Post.find({ userId: req.params.userId }).sort({ createdAt: -1 });

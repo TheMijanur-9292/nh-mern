@@ -21,3 +21,20 @@ router.get('/:id', userController.getUserById);
 router.get('/all', userController.getAllUsers);
 
 module.exports = router;
+
+// server/routes/userRoutes.js এর ভেতরে
+//Notification সাবস্ক্রিপশন সংরক্ষণের জন্য নতুন রাউট
+router.post('/subscribe', async (req, res) => {
+  const { subscription, userId } = req.body;
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      userId, 
+      { pushSubscription: subscription },
+      { new: true }
+    );
+    res.status(200).json({ success: true, message: 'Subscribed successfully!' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to subscribe' });
+  }
+});
