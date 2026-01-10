@@ -165,7 +165,7 @@ const Footer = () => {
           <Typography variant="body2" sx={{ color: '#6b7280' }}>
             Developed & Designed by{' '}
             <MuiLink 
-              href="https://github.com/themijanur-9292" 
+              href="https://www.linkedin.com/in/md-mijanur-molla?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" 
               target="_blank" 
               sx={{ background: 'linear-gradient(135deg, #6366F1 0%, #14B8A6 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: '700', textDecoration: 'none' }}
             >

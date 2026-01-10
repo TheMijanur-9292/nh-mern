@@ -20,6 +20,11 @@ const theme = createTheme({
   },
 });
 
+// --- ১. ব্যাকএন্ড বেস ইউআরএল সেটআপ ---
+// হোস্ট করার পর 'https://your-backend-url.onrender.com' আপনার রেন্ডার ইউআরএল হবে।
+// .env ফাইল ব্যবহার করা প্রোডাকশনের জন্য সেরা প্র্যাকটিস।
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'; 
+
 // নোটিফিকেশন সাবস্ক্রাইব ফাংশন
 const registerAndSubscribe = async () => {
   try {
@@ -32,28 +37,20 @@ const registerAndSubscribe = async () => {
         applicationServerKey: 'BCxbFO2wC1Y38wRq7zFiOki0KYtWzRlwNhhWy30GkOsMGLcmy1P3g89QJ0cKP2Uskr85WuHkztHdNi5Ao-SrGVE' 
       });
 
-      // লগইন করা ইউজারের আইডি সংগ্রহ করুন
+      // লোকাল স্টোরেজ থেকে ইউজারের ডাটা এবং আইডি নেওয়া
       const userData = JSON.parse(localStorage.getItem('user')); 
       const userId = userData?._id || userData?.id;
-      // 👇👇👇 ডিবাগিং কোড এখানে শুরু 👇👇👇
-      console.log("🔍 DEBUG: LocalStorage Data:", userData);
-      console.log("🔍 DEBUG: Extracted User ID:", userId);
-      // 👆👆👆 ডিবাগিং কোড শেষ 👆👆👆
 
       if (userId) {
-        console.log("🚀 DEBUG: Sending subscription to backend..."); // এই লাইনটি আসছে কিনা দেখুন
-
-        // ব্যাকএন্ডে সাবস্ক্রিপশন ডাটা পাঠানো
-        const response = await fetch('http://localhost:5000/api/users/subscribe', {
+        // --- ২. হার্ডকোড করা ইউআরএল পরিবর্তন করে ডাইনামিক করা হলো ---
+        const response = await fetch(`${API_BASE_URL}/api/users/subscribe`, {
           method: 'POST',
           body: JSON.stringify({ subscription, userId }),
           headers: { 'Content-Type': 'application/json' }
         });
         
         const data = await response.json();
-        console.log('✅ Backend Response:', data);
-      } else {
-        console.log("⚠️ DEBUG: No User ID found. Skipping subscription save.");
+        console.log('✅ Subscription Status:', data.message);
       }
     }
   } catch (error) {
@@ -61,7 +58,6 @@ const registerAndSubscribe = async () => {
   }
 };
 
-// একটি RootWrapper তৈরি করা যাতে useEffect ব্যবহার করা যায়
 const RootWrapper = () => {
   useEffect(() => {
     if ('serviceWorker' in navigator) {

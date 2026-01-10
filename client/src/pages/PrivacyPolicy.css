@@ -1,0 +1,133 @@
+/* মেইন র‍্যাপার */
+.privacy-wrapper {
+  background-color: #f8f9fb;
+  min-height: 100vh;
+  padding: 4rem 1rem;
+  font-family: 'Inter', sans-serif;
+}
+
+/* কন্টেন্ট কার্ড */
+.privacy-card {
+  background: white;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem;
+  border-radius: 24px;
+  border: 1px solid #eee;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* হেডার সেকশন */
+.privacy-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.header-icon {
+  font-size: 3.5rem;
+  color: #764ba2;
+  margin-bottom: 1rem;
+}
+
+.privacy-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+}
+
+.privacy-date {
+  color: #718096;
+  font-size: 0.95rem;
+}
+
+.privacy-intro {
+  color: #4a5568;
+  text-align: center;
+  line-height: 1.8;
+  font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+}
+
+.divider-line {
+  height: 1px;
+  background-color: #e2e8f0;
+  margin-bottom: 3rem;
+  border: none;
+}
+
+/* পলিসি সেকশন */
+.policy-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.policy-item {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.icon-box {
+  background-color: #f3f0ff;
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #764ba2;
+  flex-shrink: 0; /* আইকন ছোট হয়ে যাওয়া আটকাবে */
+}
+
+.policy-content h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0 0 0.5rem 0;
+}
+
+.policy-content p {
+  color: #4a5568;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* নিচের কন্টাক্ট বক্স */
+.privacy-contact-box {
+  margin-top: 4rem;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  color: white;
+  text-align: center;
+}
+
+.privacy-contact-box h5 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.privacy-contact-box p {
+  opacity: 0.9;
+  font-size: 1rem;
+}
+
+/* রেস্পন্সিভ ডিজাইন */
+@media (max-width: 600px) {
+  .privacy-card {
+    padding: 1.5rem;
+  }
+  .privacy-title {
+    font-size: 1.8rem;
+  }
+  .policy-item {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+    align-items: center;
+  }
+}

@@ -1,0 +1,133 @@
+/* মেইন র‍্যাপার */
+.terms-wrapper {
+  background-color: #f8f9fb;
+  min-height: 100vh;
+  padding: 4rem 1rem;
+  font-family: 'Inter', sans-serif;
+}
+
+/* কন্টেন্ট কার্ড */
+.terms-card {
+  background: white;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem;
+  border-radius: 24px;
+  border: 1px solid #eee;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* হেডার সেকশন */
+.terms-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.terms-header-icon {
+  font-size: 3.5rem;
+  color: #764ba2;
+  margin-bottom: 1rem;
+}
+
+.terms-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+}
+
+.terms-description {
+  color: #4a5568;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.terms-date {
+  color: #718096;
+  font-size: 0.9rem;
+  display: block;
+}
+
+.terms-divider {
+  height: 1px;
+  background-color: #e2e8f0;
+  margin-bottom: 3rem;
+  border: none;
+}
+
+/* লিস্ট সেকশন */
+.terms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.terms-item {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.terms-icon-box {
+  background-color: #f3f0ff;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; /* গোল শেপ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #764ba2;
+  flex-shrink: 0;
+}
+
+.terms-content h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0 0 0.5rem 0;
+}
+
+.terms-content p {
+  color: #4a5568;
+  line-height: 1.7;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* ডিসক্লেইমার বক্স (নিচে) */
+.disclaimer-box {
+  margin-top: 4rem;
+  padding: 2rem;
+  background-color: #fff5f5;
+  border: 1px solid #feb2b2;
+  border-radius: 16px;
+}
+
+.disclaimer-title {
+  color: #e53e3e; /* লাল কালার */
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.disclaimer-text {
+  color: #4a5568;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+/* রেস্পন্সিভ */
+@media (max-width: 600px) {
+  .terms-card {
+    padding: 1.5rem;
+  }
+  .terms-title {
+    font-size: 2rem;
+  }
+  .terms-item {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    text-align: center;
+  }
+}
