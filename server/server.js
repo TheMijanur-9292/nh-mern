@@ -6,7 +6,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const webpush = require('web-push');
 
-// ১. সবার আগে এনভায়রনমেন্ট ভেরিয়েবল লোড
+// ১. এনভায়রনমেন্ট ভেরিয়েবল লোড
 dotenv.config(); 
 
 // Routes Import
@@ -28,23 +28,26 @@ webpush.setVapidDetails(
 const app = express();
 const httpServer = createServer(app); 
 
-// ৩. ডাইনামিক CORS সেটআপ (খুবই জরুরি)
-// হোস্ট করার পর আপনার ফ্রন্টএন্ড URL এখানে দিতে হবে
+// ৩. শক্তিশালী CORS সেটআপ (ফিক্সড)
 const allowedOrigins = [
   "http://localhost:5173", 
-  "https://your-frontend-link.vercel.app" // হোস্টিং এর পর আপনার ভার্সেল লিঙ্কটি এখানে বসাবেন
+  "https://neighborrhelp.vercel.app" // আপনার বর্তমান ফ্রন্টএন্ড লিঙ্ক
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
+    // origin না থাকলে (যেমন লোকাল টেস্ট বা মোবাইল) অথবা লিস্টে থাকলে অনুমতি দাও
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      console.log("CORS Blocked for origin:", origin); // ডিবাগিং এর জন্য
+      callback(new Error('Not allowed by CORS policy'));
     }
   },
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // OPTIONS অত্যন্ত জরুরি
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+  optionsSuccessStatus: 200 // পুরানো ব্রাউজারের জন্য
 }));
 
 app.use(express.json());
@@ -53,7 +56,8 @@ app.use(express.json());
 const io = new Server(httpServer, {
   cors: {
     origin: allowedOrigins,
-    methods: ["GET", "POST"]
+    methods: ["GET", "POST"],
+    credentials: true
   }
 });
 
@@ -63,7 +67,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/messages', messageRoutes);
 
 app.get('/', (req, res) => {
-  res.send('Neighbor Help API is Live! 🚀');
+  res.send('Neighbor Help API is Live and CORS fixed! 🚀');
 });
 
 // Socket.io রিয়েল-টাইম লজিক
