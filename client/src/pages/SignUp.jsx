@@ -5,6 +5,9 @@ import { motion } from 'framer-motion';
 import { Person, Email, Lock, Visibility, VisibilityOff, VolunteerActivism } from '@mui/icons-material';
 import axios from 'axios';
 
+// ১. ব্যাকএন্ড বেস ইউআরএল সেটআপ
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const SignUp = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -30,7 +33,10 @@ const SignUp = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post('http://localhost:5000/api/users/signup', formData);
+      //const res = await axios.post('http://localhost:5000/api/users/signup', formData);
+      
+      const res = await axios.post(`${API_BASE_URL}/api/users/signup`, formData);
+      
       setToast({ open: true, message: 'Registration Successful! Redirecting...', severity: 'success' });
       
       // ২ সেকেন্ড পর লগইন পেজে পাঠাবে

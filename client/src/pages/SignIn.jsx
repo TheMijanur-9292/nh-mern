@@ -5,6 +5,9 @@ import { motion } from 'framer-motion';
 import { Visibility, VisibilityOff, Email, Lock, VolunteerActivism } from '@mui/icons-material';
 import axios from 'axios';
 
+// ১. ব্যাকএন্ড বেস ইউআরএল সেটআপ
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const SignIn = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -28,8 +31,10 @@ const SignIn = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post('http://localhost:5000/api/users/signin', formData);
+     // const res = await axios.post('http://localhost:5000/api/users/signin', formData);
       
+      const res = await axios.post(`${API_BASE_URL}/api/users/signin`, formData);
+
       // 🔥 ফিক্সড: ব্যাকএন্ড সরাসরি ইউজার অবজেক্ট পাঠায়, তাই res.data ব্যবহার করুন
       // এবং নিশ্চিত করুন id অথবা _id প্রোপার্টি আছে
       const userData = res.data;

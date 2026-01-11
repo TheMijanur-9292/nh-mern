@@ -16,6 +16,8 @@ import axios from 'axios';
 import { io } from "socket.io-client";
 import './Messages.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const Messages = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -56,8 +58,9 @@ const Messages = () => {
 
   // Socket.io কানেকশন
   useEffect(() => {
-    socket.current = io("http://localhost:5000");
-    if (currentUser?.id) socket.current.emit("addNewUser", currentUser.id);
+   // socket.current = io("http://localhost:5000");
+   socket.current = io(API_BASE_URL); 
+   if (currentUser?.id) socket.current.emit("addNewUser", currentUser.id);
     
     socket.current.on("getOnlineUsers", (users) => setOnlineUsers(users));
     
@@ -78,8 +81,9 @@ const Messages = () => {
     const uid = currentUser?.id || currentUser?._id;
     if (!uid) return;
     try {
-      const res = await axios.get(`http://localhost:5000/api/messages/conversations/${uid}`);
-      setConversations(res.data);
+     //  const res = await axios.get(`http://localhost:5000/api/messages/conversations/${uid}`);
+     const res = await axios.get(`${API_BASE_URL}/api/messages/conversations/${uid}`); 
+     setConversations(res.data);
       
       // যদি URL এ কোনো ID না থাকে কিন্তু কনভারসেশন থাকে, প্রথমটা লোড করুন
       if (!receiverIdFromUrl && res.data.length > 0 && !isMobile) {
@@ -104,8 +108,9 @@ const Messages = () => {
 
   const fetchChatHistory = async (otherId) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/messages/${currentUser.id}/${otherId}`);
-      setMessages(res.data);
+     // const res = await axios.get(`http://localhost:5000/api/messages/${currentUser.id}/${otherId}`);
+     const res = await axios.get(`${API_BASE_URL}/api/messages/${currentUser.id}/${otherId}`); 
+     setMessages(res.data);
     } catch (err) { console.error("History error:", err); }
   };
 
@@ -120,8 +125,8 @@ const Messages = () => {
     };
 
     try {
-      const res = await axios.post('http://localhost:5000/api/messages/send', messageData);
-      
+     // const res = await axios.post('http://localhost:5000/api/messages/send', messageData);
+      const res = await axios.post(`${API_BASE_URL}/api/messages/send`, messageData);
       // সকেটে পাঠানো
       socket.current.emit("sendMessage", res.data);
       
@@ -135,8 +140,9 @@ const Messages = () => {
     setProfileLoading(true);
     setOpenProfile(true);
     try {
-      const res = await axios.get(`http://localhost:5000/api/users/${activeChat.id}`);
-      setOtherUserData(res.data);
+     // const res = await axios.get(`http://localhost:5000/api/users/${activeChat.id}`);
+     const res = await axios.get(`${API_BASE_URL}/api/users/${activeChat.id}`); 
+     setOtherUserData(res.data);
     } catch (err) {
       console.error("Profile load failed", err);
     } finally {
@@ -147,7 +153,7 @@ const Messages = () => {
   const handleSendRating = async (newValue) => {
     if (!newValue) return;
     try {
-      await axios.post('http://localhost:5000/api/users/rate', {
+      await axios.post(`${API_BASE_URL}/api/users/rate`, {
         userId: activeChat.id,
         star: newValue,
         currentUserId: currentUser.id

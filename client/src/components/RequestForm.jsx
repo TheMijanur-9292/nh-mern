@@ -5,6 +5,8 @@ import {
 } from '@mui/material';
 import { Close as CloseIcon, Send as SendIcon, Cancel as CancelIcon } from '@mui/icons-material';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const RequestForm = ({ onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
     title: '',

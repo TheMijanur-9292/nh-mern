@@ -10,6 +10,9 @@ import {
 import axios from 'axios';
 import './Profile.css'; // External CSS ফাইল ইমপোর্ট
 
+// ১. ব্যাকএন্ড বেস ইউআরএল সেটআপ
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const Profile = () => {
   const [userPosts, setUserPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,7 +37,9 @@ const Profile = () => {
 
   const fetchUserInfo = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/users/${currentUser.id}`);
+      //const res = await axios.get(`http://localhost:5000/api/users/${currentUser.id}`);
+      const res = await axios.get(`${API_BASE_URL}/api/users/${currentUser.id}`);
+
       setUserData(res.data);
     } catch (err) {
       console.error("Error fetching user info:", err);
@@ -43,7 +48,9 @@ const Profile = () => {
 
   const fetchUserPosts = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/posts/user/${currentUser.id}`);
+      //const res = await axios.get(`http://localhost:5000/api/posts/user/${currentUser.id}`);
+      const res = await axios.get(`${API_BASE_URL}/api/posts/user/${currentUser.id}`);
+
       setUserPosts(res.data);
       setLoading(false);
     } catch (err) {
@@ -62,7 +69,9 @@ const Profile = () => {
   const confirmDelete = async () => {
     if (postToDelete) {
       try {
-        await axios.delete(`http://localhost:5000/api/posts/${postToDelete}`);
+       // await axios.delete(`http://localhost:5000/api/posts/${postToDelete}`);
+        await axios.delete(`${API_BASE_URL}/api/posts/${postToDelete}`);
+
         setUserPosts(userPosts.filter(post => post._id !== postToDelete));
         
         // মডাল বন্ধ করা এবং সাকসেস মেসেজ দেখানো

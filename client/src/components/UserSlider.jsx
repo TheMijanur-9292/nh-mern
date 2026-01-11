@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowBackIos, ArrowForwardIos, WorkspacePremium } from '@mui/icons-material';
 import axios from 'axios';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const UserSlider = () => {
   const [users, setUsers] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -13,8 +15,10 @@ const UserSlider = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/users/all'); // এই রাউটটি ব্যাকএন্ডে যোগ করতে হবে
-        setUsers(res.data);
+       // const res = await axios.get('http://localhost:5000/api/users/all'); // এই রাউটটি ব্যাকএন্ডে যোগ করতে হবে
+       const res = await axios.get(`${API_BASE_URL}/api/users/all`); 
+       
+       setUsers(res.data);
       } catch (err) {
         console.error("Failed to fetch users", err);
       }

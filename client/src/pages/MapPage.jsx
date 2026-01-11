@@ -14,6 +14,9 @@ import FilterBar from '../components/FilterBar';
 import RequestForm from '../components/RequestForm';
 import MapHelpCard from '../components/MapHelpCard';
 
+// এটি আপনার কোডে অলরেডি আছে, না থাকলে যোগ করুন
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const pulseAnimation = keyframes`
   0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7); transform: scale(1); }
   70% { box-shadow: 0 0 0 20px rgba(255, 71, 87, 0); transform: scale(1.1); }
@@ -105,8 +108,9 @@ const MapPage = () => {
 
   const fetchPosts = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/posts');
-      setPosts(Array.isArray(res.data) ? res.data : []);
+     // const res = await axios.get('http://localhost:5000/api/posts');
+     const res = await axios.get(`${API_BASE_URL}/api/posts`); 
+     setPosts(Array.isArray(res.data) ? res.data : []);
     } catch (err) { console.log("Fetch error"); }
   };
 
@@ -139,8 +143,9 @@ const MapPage = () => {
         contact: "Chat only"
       };
 
-      const res = await axios.post('http://localhost:5000/api/posts', postData);
-      
+     // const res = await axios.post('http://localhost:5000/api/posts', postData);
+     const res = await axios.post(`${API_BASE_URL}/api/posts`, postData); 
+
       if (res.status === 201 || res.status === 200) {
         setIsFormOpen(false);
         fetchPosts();
