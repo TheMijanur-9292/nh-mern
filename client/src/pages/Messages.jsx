@@ -100,9 +100,15 @@ const Messages = () => {
     if (receiverIdFromUrl && receiverIdFromUrl !== "undefined" && currentUser?.id) {
       setActiveChat({ id: receiverIdFromUrl, name: receiverNameFromUrl || 'Neighbor' });
       fetchChatHistory(receiverIdFromUrl);
-      if (isMobile) setSidebarOpen(false); // মোবাইলে চ্যাট ওপেন হলে সাইডবার বন্ধ হবে
+      if (isMobile) setSidebarOpen(false); 
     } else {
-        if(!isMobile) setSidebarOpen(true);
+        // --- পরিবর্তন: মোবাইলে চ্যাট সিলেক্ট করা না থাকলে ড্রয়ার খুলে যাবে ---
+        if(!isMobile) {
+          setSidebarOpen(true);
+        } else {
+          setActiveChat(null); // চ্যাট ক্লিয়ার রাখা
+          setSidebarOpen(true); // ড্রয়ার খুলে রাখা
+        }
     }
   }, [receiverIdFromUrl, currentUser, isMobile]);
 
@@ -218,7 +224,8 @@ const Messages = () => {
        
 
         {/* --- CHAT WINDOW --- */}
-        <Grid item className={`chat-window ${!activeChat && isMobile ? 'hidden' : ''}`}>
+        {/* <Grid item className={`chat-window ${!activeChat && isMobile ? 'hidden' : ''}`}> */}
+        <Grid item className={`chat-window ${!activeChat && isMobile ? 'mobile-empty' : ''}`}>
           {activeChat ? (
             <>
               {/* Chat Header */}
