@@ -131,6 +131,38 @@
 }
 
 /* Messages Area */
+
+/* মেইন কন্টেইনার ফিক্স */
+.messages-container {
+    height: calc(100vh - 64px); /* নেভবারের হাইট বাদে পুরো স্ক্রিন */
+    display: flex;
+    overflow: hidden;
+}
+
+.messages-grid {
+    height: 100% !important;
+}
+
+/* চ্যাট উইন্ডো ফিক্স */
+.chat-window {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ইনপুট ফর্ম ফিক্স */
+.message-input-form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .messages-container {
+        height: calc(100vh - 56px); /* মোবাইলে নেভবার ছোট হয় */
+    }
+}
+
 .messages-area {
   flex-grow: 1;
   padding: 20px;

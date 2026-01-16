@@ -226,130 +226,162 @@ const Messages = () => {
         {/* --- CHAT WINDOW --- */}
         {/* <Grid item className={`chat-window ${!activeChat && isMobile ? 'hidden' : ''}`}> */}
         <Grid item className={`chat-window ${!activeChat && isMobile ? 'mobile-empty' : ''}`}>
-          {activeChat ? (
-            <>
-              {/* Chat Header */}
-              <Paper elevation={1} className="chat-header">
-                <Box className="chat-header-left">
-                  {isMobile && (
-                    <IconButton onClick={() => {setSidebarOpen(true); navigate('/messages');}} sx={{ mr: 1 }}>
-                      <ArrowBack />
-                    </IconButton>
-                  )}
-                  
-                  <Box className="avatar-container" onClick={fetchOtherUserProfile}>
-                    <Badge 
-                        overlap="circular" 
-                        variant="dot" 
-                        color={isOnline(activeChat.id) ? "success" : "default"}
-                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                    >
-                      <Avatar className="chat-avatar" src={activeChat.avatar || ''}>
-                        {activeChat.name?.charAt(0).toUpperCase()}
-                      </Avatar>
-                    </Badge>
-                  </Box>
-
-                  <Box className="chat-header-info" onClick={fetchOtherUserProfile}>
-                    <Typography className="chat-header-name">
-                      {activeChat.name}
-                    </Typography>
-                    <Typography className={`chat-header-status ${isOnline(activeChat.id) ? 'online' : ''}`}>
-                      {isOnline(activeChat.id) ? "Active now" : "Offline"}
-                    </Typography>
-                  </Box>
-                </Box>
-                
-                <Stack direction="row" spacing={1}>
-                    {!isMobile && (
-                         <Button 
-                         variant="outlined" 
-                         size="small" 
-                         startIcon={<AccountCircle />} 
-                         onClick={fetchOtherUserProfile}
-                         className="profile-header-btn"
-                       >
-                         View Profile
-                       </Button>
-                    )}
-                    <IconButton onClick={() => setOpenGuidelines(true)} color="primary">
-                        <InfoOutlined />
-                    </IconButton>
-                </Stack>
-              </Paper>
-
-              {/* Messages Area */}
-              <Box className="messages-area">
-                {messages.length === 0 ? (
-                  <Box className="messages-empty">
-                    <ChatIcon sx={{ fontSize: 60, color: '#e0e0e0', mb: 2 }} />
-                    <Typography color="text.secondary">
-                      No messages yet. Say hello! 👋
-                    </Typography>
-                  </Box>
-                ) : (
-                  messages.map((msg, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className={`message-wrapper ${msg.senderId === currentUser.id ? 'sent' : 'received'}`}
-                    >
-                      <Box className="message-bubble">
-                        <Typography variant="body1" className="message-text">
-                          {msg.message}
-                        </Typography>
-                        <Typography className="message-time">
-                          {formatMessageTime(msg.createdAt)}
-                        </Typography>
-                      </Box>
-                    </motion.div>
-                  ))
-                )}
-                <div ref={scrollRef} />
-              </Box>
-
-              {/* Message Input */}
-              <Box component="form" onSubmit={handleSendMessage} className="message-input-form">
-                <TextField 
-                  fullWidth 
-                  placeholder="Type a message..." 
-                  variant="outlined"
-                  size="small" 
-                  autoComplete='off' 
-                  value={newMessage} 
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  className="message-input-field"
-                  InputProps={{
-                    className: 'rounded-input'
-                  }}
-                />
-                <IconButton 
-                  type="submit" 
-                  disabled={!newMessage.trim()} 
-                  className="send-btn"
-                  color="primary"
-                >
-                  <Send />
-                </IconButton>
-              </Box>
-            </>
-          ) : (
-            <Box className="no-chat-selected">
-               {!isMobile && (
-                   <>
-                    <img src="https://img.freepik.com/free-vector/messaging-fun-concept-illustration_114360-1698.jpg" alt="Chat" width="300" />
-                    <Typography variant="h5" sx={{ mt: 2, fontWeight: 600, color: '#374151' }}>
-                        Select a conversation
-                    </Typography>
-                    <Typography color="text.secondary">
-                        Choose a neighbor from the sidebar to start chatting.
-                    </Typography>
-                   </>
-               )}
-            </Box>
+  {activeChat ? (
+    /* পুরো চ্যাট উইন্ডোকে একটি ফ্লেক্স কন্টেইনার করা হলো */
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', position: 'relative' }}>
+      
+      {/* ১. Chat Header (এটি উপরে ফিক্সড থাকবে) */}
+      <Paper 
+        elevation={1} 
+        className="chat-header" 
+        sx={{ 
+          flexShrink: 0, 
+          zIndex: 10,
+          borderRadius: 0 // মোবাইল ভিউতে কর্নার শার্প রাখার জন্য
+        }}
+      >
+        <Box className="chat-header-left">
+          {isMobile && (
+            <IconButton onClick={() => {setSidebarOpen(true); navigate('/messages');}} sx={{ mr: 1 }}>
+              <ArrowBack />
+            </IconButton>
           )}
-        </Grid>
+          
+          <Box className="avatar-container" onClick={fetchOtherUserProfile}>
+            <Badge 
+                overlap="circular" 
+                variant="dot" 
+                color={isOnline(activeChat.id) ? "success" : "default"}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            >
+              <Avatar className="chat-avatar" src={activeChat.avatar || ''}>
+                {activeChat.name?.charAt(0).toUpperCase()}
+              </Avatar>
+            </Badge>
+          </Box>
+
+          <Box className="chat-header-info" onClick={fetchOtherUserProfile}>
+            <Typography className="chat-header-name">
+              {activeChat.name}
+            </Typography>
+            <Typography className={`chat-header-status ${isOnline(activeChat.id) ? 'online' : ''}`}>
+              {isOnline(activeChat.id) ? "Active now" : "Offline"}
+            </Typography>
+          </Box>
+        </Box>
+        
+        <Stack direction="row" spacing={1}>
+            {!isMobile && (
+                 <Button 
+                 variant="outlined" 
+                 size="small" 
+                 startIcon={<AccountCircle />} 
+                 onClick={fetchOtherUserProfile}
+                 className="profile-header-btn"
+               >
+                 View Profile
+               </Button>
+            )}
+            <IconButton onClick={() => setOpenGuidelines(true)} color="primary">
+                <InfoOutlined />
+            </IconButton>
+        </Stack>
+      </Paper>
+
+      {/* ২. Messages Area (এটি ফ্লেক্সিবল এবং স্ক্রলযোগ্য) */}
+      <Box 
+        className="messages-area" 
+        sx={{ 
+          flexGrow: 1, 
+          overflowY: 'auto', 
+          p: 2,
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
+        {messages.length === 0 ? (
+          <Box className="messages-empty" sx={{ my: 'auto' }}>
+            <ChatIcon sx={{ fontSize: 60, color: '#e0e0e0', mb: 2 }} />
+            <Typography color="text.secondary">
+              No messages yet. Say hello! 👋
+            </Typography>
+          </Box>
+        ) : (
+          messages.map((msg, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`message-wrapper ${msg.senderId === currentUser.id ? 'sent' : 'received'}`}
+            >
+              <Box className="message-bubble">
+                <Typography variant="body1" className="message-text">
+                  {msg.message}
+                </Typography>
+                <Typography className="message-time">
+                  {formatMessageTime(msg.createdAt)}
+                </Typography>
+              </Box>
+            </motion.div>
+          ))
+        )}
+        <div ref={scrollRef} />
+      </Box>
+
+      {/* ৩. Message Input (এটি নিচে ফিক্সড থাকবে) */}
+      <Box 
+        component="form" 
+        onSubmit={handleSendMessage} 
+        className="message-input-form-container"
+        sx={{ 
+          flexShrink: 0, 
+          p: { xs: 1, md: 2 }, 
+          bgcolor: 'white', 
+          borderTop: '1px solid #eee' 
+        }}
+      >
+        <Box className="message-input-form">
+          <TextField 
+            fullWidth 
+            placeholder="Type a message..." 
+            variant="outlined"
+            size="small" 
+            autoComplete='off' 
+            value={newMessage} 
+            onChange={(e) => setNewMessage(e.target.value)}
+            className="message-input-field"
+            InputProps={{
+              className: 'rounded-input'
+            }}
+          />
+          <IconButton 
+            type="submit" 
+            disabled={!newMessage.trim()} 
+            className="send-btn"
+            color="primary"
+            sx={{ ml: 1 }}
+          >
+            <Send />
+          </IconButton>
+        </Box>
+      </Box>
+    </Box>
+  ) : (
+    <Box className="no-chat-selected">
+        {!isMobile && (
+            <>
+             <img src="https://img.freepik.com/free-vector/messaging-fun-concept-illustration_114360-1698.jpg" alt="Chat" width="300" />
+             <Typography variant="h5" sx={{ mt: 2, fontWeight: 600, color: '#374151' }}>
+                 Select a conversation
+             </Typography>
+             <Typography color="text.secondary">
+                 Choose a neighbor from the sidebar to start chatting.
+             </Typography>
+            </>
+        )}
+    </Box>
+  )}
+</Grid>
 
         {/* --- GUIDELINES SIDEBAR (Desktop Only) --- */}
         {!isMobile && activeChat && (
