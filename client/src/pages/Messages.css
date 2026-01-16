@@ -1,20 +1,22 @@
 /* --- Global Container Layout --- */
 .messages-container {
-  height: calc(100vh - 64px); /* Navbar height বাদ দিয়ে */
+  /* নেভবারের হাইট বাদ দিয়ে পুরো স্ক্রিন হাইট ফিক্সড করা */
+  height: calc(100vh - 64px); 
   display: flex;
-  background-color: #f3f4f6; /* Light gray background like modern apps */
+  background-color: #f3f4f6;
   position: relative;
-  overflow: hidden;
+  overflow: hidden; /* পুরো পেজ স্ক্রল হবে না */
 }
 
-/* --- Layout Grid --- */
 .messages-grid {
-  height: 100%;
+  height: 100% !important;
   width: 100%;
-  flex-wrap: nowrap !important; /* Prevent wrapping on desktop */
+  margin: 0 !important;
+  display: flex;
+  flex-wrap: nowrap !important;
 }
 
-/* --- Conversations Sidebar (Left) --- */
+/* --- Conversations Sidebar (Left - Desktop) --- */
 .conversations-sidebar {
   width: 320px;
   background-color: #ffffff;
@@ -36,12 +38,12 @@
   display: flex;
   align-items: center;
   background-color: #fff;
+  border-bottom: 1px solid #f3f4f6;
 }
 
 .conversations-list {
   flex-grow: 1;
   overflow-y: auto;
-  padding-top: 0 !important;
 }
 
 .conversation-item {
@@ -50,41 +52,31 @@
   border-bottom: 1px solid #f9fafb;
 }
 
-.conversation-item:hover {
-  background-color: #f9fafb !important;
-}
-
 .conversation-item.active {
-  background-color: #eef2ff !important; /* Light Indigo tint */
-  border-left: 4px solid #6366f1; /* Primary color indicator */
+  background-color: #eef2ff !important;
+  border-left: 4px solid #6366f1;
 }
 
-.conversation-item.active .MuiTypography-root {
-  color: #111827;
-  font-weight: 600;
-}
-
-/* --- Chat Window (Center) --- */
+/* --- Chat Window (Center/Right) --- */
 .chat-window {
-  flex-grow: 1;
+  flex: 1;
   display: flex;
-  flex-direction: column;
-  background-color: #f0f2f5;
-  background-image: url("https://www.transparenttextures.com/patterns/subtle-white-feathers.png"); /* Optional texture */
-  position: relative;
+  flex-direction: column; /* এলিমেন্টগুলোকে লম্বালম্বি সাজাতে */
   height: 100%;
+  background-color: #f0f2f5;
+  position: relative;
 }
 
-/* Header */
+/* Chat Header - Top Fixed */
 .chat-header {
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffffff;
+  background-color: #ffffff !important;
   border-bottom: 1px solid #e5e7eb;
-  height: 70px;
-  flex-shrink: 0;
+  height: 65px;
+  flex-shrink: 0; /* হেডার যেন সংকুচিত না হয় */
   z-index: 10;
 }
 
@@ -98,8 +90,6 @@
   width: 40px !important;
   height: 40px !important;
   margin-right: 12px;
-  border: 2px solid #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .chat-header-info {
@@ -111,74 +101,25 @@
   font-weight: 600 !important;
   font-size: 1rem !important;
   color: #111827;
-  line-height: 1.2 !important;
 }
 
 .chat-header-status {
   font-size: 0.75rem !important;
-  color: #6b7280;
 }
 
 .chat-header-status.online {
-  color: #10b981; /* Green color for online */
-  font-weight: 500;
+  color: #10b981;
 }
 
-.profile-header-btn {
-  text-transform: none !important;
-  border-radius: 20px !important;
-  padding: 4px 12px !important;
-}
-
-/* Messages Area */
-
-/* মেইন কন্টেইনার ফিক্স */
-.messages-container {
-    height: calc(100vh - 64px); /* নেভবারের হাইট বাদে পুরো স্ক্রিন */
-    display: flex;
-    overflow: hidden;
-}
-
-.messages-grid {
-    height: 100% !important;
-}
-
-/* চ্যাট উইন্ডো ফিক্স */
-.chat-window {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-/* ইনপুট ফর্ম ফিক্স */
-.message-input-form {
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-@media (max-width: 900px) {
-    .messages-container {
-        height: calc(100vh - 56px); /* মোবাইলে নেভবার ছোট হয় */
-    }
-}
-
+/* Messages Area - Middle Scrollable Section */
 .messages-area {
-  flex-grow: 1;
+  flex: 1; /* এটি মাঝখানের পুরো জায়গা নিয়ে নিবে */
   padding: 20px;
-  overflow-y: auto;
+  overflow-y: auto; /* শুধু এই অংশটি স্ক্রল হবে */
   display: flex;
   flex-direction: column;
-  gap: 8px;
-}
-
-.messages-empty {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  opacity: 0.7;
+  gap: 12px;
+  background-color: #f0f2f5;
 }
 
 /* Message Bubbles */
@@ -186,57 +127,37 @@
   display: flex;
   width: 100%;
 }
-
-.message-wrapper.sent {
-  justify-content: flex-end;
-}
-
-.message-wrapper.received {
-  justify-content: flex-start;
-}
+.message-wrapper.sent { justify-content: flex-end; }
+.message-wrapper.received { justify-content: flex-start; }
 
 .message-bubble {
-  max-width: 65%;
+  max-width: 70%;
   padding: 10px 14px;
-  position: relative;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 18px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   word-wrap: break-word;
 }
 
 .message-wrapper.sent .message-bubble {
-  background-color: #6366f1; /* Primary Color (Indigo) */
+  background-color: #6366f1;
   color: white;
-  border-radius: 12px 12px 0 12px;
+  border-bottom-right-radius: 4px;
 }
 
 .message-wrapper.received .message-bubble {
   background-color: #ffffff;
   color: #1f2937;
-  border-radius: 12px 12px 12px 0;
-}
-
-.message-text {
-  font-size: 0.95rem !important;
-  line-height: 1.4 !important;
+  border-bottom-left-radius: 4px;
 }
 
 .message-time {
-  font-size: 0.7rem !important;
+  font-size: 0.65rem;
   margin-top: 4px;
-  text-align: right;
   display: block;
-  opacity: 0.8;
+  text-align: right;
 }
 
-.message-wrapper.sent .message-time {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.message-wrapper.received .message-time {
-  color: #9ca3af;
-}
-
-/* Message Input Area */
+/* Message Input Area - Bottom Fixed */
 .message-input-form {
   padding: 12px 16px;
   background-color: #ffffff;
@@ -244,64 +165,61 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0; /* ইনপুট বক্স যেন চ্যাপ্টা না হয় */
 }
 
 .message-input-field .MuiOutlinedInput-root {
   background-color: #f3f4f6;
   border-radius: 24px !important;
-  padding-right: 8px;
-}
-
-.message-input-field fieldset {
-  border: none !important; /* Remove default border for cleaner look */
 }
 
 .send-btn {
   background-color: #6366f1 !important;
   color: white !important;
-  width: 45px;
-  height: 45px;
-  transition: transform 0.2s !important;
+  width: 42px;
+  height: 42px;
 }
 
-.send-btn:hover {
-  background-color: #4f46e5 !important;
-  transform: scale(1.05);
+/* --- Mobile View Adjustments --- */
+@media (max-width: 899px) {
+  .messages-container {
+    height: calc(100vh - 56px); /* মোবাইলে নেভবার ছোট থাকে */
+  }
+
+  .chat-window {
+    width: 100%;
+  }
+
+  .chat-window.mobile-empty {
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fb;
+    text-align: center;
+  }
+
+  .message-bubble {
+    max-width: 85%;
+  }
+
+  /* মোবাইল কিবোর্ড ওপেন হলে অনেক সময় ভিউপোর্ট হাইট ছোট হয়ে যায়, এটি ফিক্স করতে: */
+  .chat-header {
+    height: 60px;
+  }
 }
 
-.send-btn:disabled {
-  background-color: #e5e7eb !important;
-}
-
-/* --- Guidelines Sidebar (Right - Desktop) --- */
+/* --- Guidelines Sidebar (Right) --- */
 .guidelines-sidebar {
   width: 260px;
   background-color: #ffffff;
   border-left: 1px solid #e5e7eb;
   padding: 20px;
-  display: none; /* Default hidden on very small screens handled by JS media query */
   flex-shrink: 0;
   overflow-y: auto;
 }
 
-@media (min-width: 900px) {
-  .guidelines-sidebar {
-    display: block;
-  }
-}
-
-.privacy-badge {
-  background-color: #ecfdf5;
-  color: #059669;
-  padding: 12px;
-  border-radius: 8px;
-  text-align: center;
-  margin-top: 20px;
-}
-
 /* --- No Chat Selected State --- */
 .no-chat-selected {
-  height: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -310,56 +228,14 @@
   background-color: #f9fafb;
 }
 
-/* --- Mobile Specifics --- */
-@media (max-width: 899px) {
-  .messages-container {
-    flex-direction: column;
-  }
-  
-  .chat-window {
-    width: 100%;
-  }
-
-  .chat-window.hidden {
-    display: none;
-  }
-
-  .message-bubble {
-    max-width: 75%;
-  }
-
-  .guidelines-sidebar {
-    display: none; /* Always handle via Drawer on mobile */
-  }
+/* Custom Scrollbar Styling */
+.messages-area::-webkit-scrollbar,
+.conversations-list::-webkit-scrollbar {
+  width: 5px;
 }
 
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
+.messages-area::-webkit-scrollbar-thumb,
+.conversations-list::-webkit-scrollbar-thumb {
   background: #d1d5db;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
-}
-
-
-@media (max-width: 900px) {
-  /* সাদা স্ক্রিন আটকানোর জন্য */
-  .chat-window.mobile-empty {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: calc(100vh - 70px);
-    background-color: #f8f9fb;
-  }
+  border-radius: 10px;
 }
